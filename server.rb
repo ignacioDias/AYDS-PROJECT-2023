@@ -23,7 +23,7 @@ class App < Sinatra::Application
     logger.level = Logger::DEBUG if development?
     set :logger, logger
   end
-  
+
   configure :development do
     register Sinatra::Reloader
     after_reload do
@@ -33,5 +33,15 @@ class App < Sinatra::Application
 
   get '/' do
     'Welcome'
+    erb :index #mostrar index.erb
   end
+
+  post '/formulario' do
+    @user = User.find_or_create_by(email: params[:email], password: params[:password])
+    erb :user #mostrar user
+  end
+
+
+
+
 end
