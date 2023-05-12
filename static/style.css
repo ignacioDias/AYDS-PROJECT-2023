@@ -37,7 +37,7 @@ input[type="email"]:focus, input[type="password"]:focus {
 }
 
 /* Estilos para el botón del formulario */
-button[type="submit"] {
+button[type="Submit"] {
     background-color: #4CAF50;
     color: #fff;
     border: none;
@@ -48,7 +48,7 @@ button[type="submit"] {
     font-size: 16px;
 }
 
-button[type="submit"]:hover {
+button[type="Submit"]:hover {
     background-color: #3e8e41;
 }
 
