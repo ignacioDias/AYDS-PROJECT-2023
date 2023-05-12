@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_12_221846) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_12_225513) do
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -21,6 +21,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_12_221846) do
     t.integer "pointExam"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "level_id"
+    t.index ["level_id"], name: "index_exams_on_level_id", unique: true
   end
 
   create_table "levels", force: :cascade do |t|
