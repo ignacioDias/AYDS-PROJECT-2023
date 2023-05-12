@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_12_125638) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_12_143654) do
   create_table "profiles", force: :cascade do |t|
     t.string "username"
     t.string "description"
@@ -19,6 +19,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_12_125638) do
     t.string "achievement"
     t.integer "user_id"
     t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.string "question"
+    t.string "answer"
+    t.string "wrongAnswer1"
+    t.string "wrongAnswer3"
+    t.integer "pointQuestion"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
