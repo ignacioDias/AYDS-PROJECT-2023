@@ -1,0 +1,63 @@
+/* Resetear valores predeterminados */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fondo oscuro */
+body {
+    background-color: #222;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilos para el formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+/* Estilos para los campos del formulario */
+input[type="email"], input[type="password"] {
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #333;
+    color: #fff;
+    width: 300px;
+    font-size: 16px;
+}
+
+input[type="email"]:focus, input[type="password"]:focus {
+    outline: none;
+}
+
+/* Estilos para el botón del formulario */
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button[type="submit"]:hover {
+    background-color: #3e8e41;
+}
+
+/* Estilos para los elementos de texto */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+
+p {
+    margin: 10px;
+    line-height: 1.5;
+}
