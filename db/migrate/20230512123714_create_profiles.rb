@@ -6,6 +6,7 @@ class CreateProfiles < ActiveRecord::Migration[7.0]
       t.string :photo
       t.integer :totalPoints
       t.string :achievement
+      t.timestamps
     end
   end
 end
