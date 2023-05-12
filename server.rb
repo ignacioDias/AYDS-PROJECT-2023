@@ -13,6 +13,9 @@ class App < Sinatra::Application
   def initialize(app = nil)
     super()
   end
+   set :root,  File.dirname(__FILE__)
+   set :views, Proc.new { File.join(root, 'views') }
+
   configure :production, :development do
     enable :logging
 
