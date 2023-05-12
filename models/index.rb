@@ -1,0 +1,8 @@
+require_relative 'models/user'
+require_relative 'models/profile'
+require_relative 'models/question'
+require_relative 'models/ranking'
+require_relative 'models/support'
+require_relative 'models/level'
+require_relative 'models/exam'
+require_relative 'models/category'
