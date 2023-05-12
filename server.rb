@@ -4,7 +4,7 @@ require 'bundler/setup'
 require 'logger'
 require "sinatra/activerecord"
 require 'sinatra/reloader' if Sinatra::Base.environment == :development
-require_relative 'models/index.rb'
+require_relative 'models/index'
 
 class App < Sinatra::Application
 
