@@ -4,7 +4,9 @@ require 'bundler/setup'
 require 'logger'
 require "sinatra/activerecord"
 require 'sinatra/reloader' if Sinatra::Base.environment == :development
-require_relative 'models/index'
+require_relative 'models/user'
+require_relative 'models/profile'
+require_relative 'models/question'
 
 class App < Sinatra::Application
 
@@ -31,8 +33,12 @@ class App < Sinatra::Application
   end
 
   get '/' do
-    'Welcome'
-    erb :index #mostrar index.erb
+    erb :inicio
+    ##erb :index #mostrar index.erb
+  end 
+
+  post '/inicio' do
+    erb :inicio
   end
 
   post '/formulario' do
