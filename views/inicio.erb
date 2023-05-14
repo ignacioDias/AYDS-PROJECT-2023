@@ -3,14 +3,25 @@
 <head>
     <title>Document</title>
     <link href="<%= url('/inicio.css') %>" rel="stylesheet" type="text/css"/>
+    <style>
+        h1 {
+            margin-top: -30px;
+        }
+        h5 {
+            margin-bottom: 20px;
+        }
+        a.signup {
+            margin-top: 10px;
+        }
+    </style>
 </head>
-<body>
-    <form action="/inicio" method="POST">
-      <h1>CulturAR</h1>
-      <a href="/registro"><button type="button">Sign Up</button></a>
-      <a href="/showLogin"><button type="button">Sign In</button></a>
-      <br>
-    </form>
-</form>
-</body>
+    <body>
+        <form action="/inicio" method="POST">
+          <h1>CulturAR</h1>
+          <h5>Aprende sobre Argentina</h5>
+          <a href="/registro" class="signup"><button type="button">Sign Up</button></a>
+          <a href="/showLogin"><button type="button">Sign In</button></a>
+          <br>
+        </form>
+    </body>
 </html>
