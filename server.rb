@@ -37,16 +37,26 @@ class App < Sinatra::Application
     ##erb :index #mostrar index.erb
   end 
 
+  get '/registro' do
+    erb :index
+  end
+
   post '/inicio' do
     erb :inicio
   end
 
-  post '/formulario' do
-    @user = User.find_or_create_by(email: params[:email], password: params[:password])
-    erb :user #mostrar user
+  get '/showLogin' do
+    erb :login
+  end
+  
+  post '/login' do
+    @user = User.find_or_create_by(username: params[:username], password: params[:password])
+    redirect '/'
   end
 
-
-
+  post '/formulario' do
+    @user = User.find_or_create_by(username: params[:username], email: params[:email], password: params[:password])
+    redirect '/'
+  end
 
 end
