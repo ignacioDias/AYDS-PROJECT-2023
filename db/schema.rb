@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_14_191516) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_14_193745) do
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -23,6 +23,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_191516) do
     t.datetime "updated_at", null: false
     t.integer "level_id"
     t.index ["level_id"], name: "index_exams_on_level_id", unique: true
+  end
+
+  create_table "exams_profiles", id: false, force: :cascade do |t|
+    t.integer "exams_id"
+    t.integer "profiles_id"
+    t.index "\"exam_id\", \"profile_id\"", name: "index_exams_profiles_on_exam_id_and_profile_id", unique: true
+    t.index ["exams_id"], name: "index_exams_profiles_on_exams_id"
+    t.index ["profiles_id"], name: "index_exams_profiles_on_profiles_id"
   end
 
   create_table "levels", force: :cascade do |t|
