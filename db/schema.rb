@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_14_185909) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_14_191516) do
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -49,6 +49,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_185909) do
     t.integer "pointQuestion"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "exam_id"
+    t.index ["exam_id"], name: "index_questions_on_exam_id", unique: true
   end
 
   create_table "rankings", force: :cascade do |t|
