@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_14_193745) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_16_191300) do
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -46,6 +46,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_193745) do
     t.integer "totalPoints"
     t.string "achievement"
     t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_profiles_on_user_id", unique: true
   end
 
@@ -62,6 +64,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_193745) do
   end
 
   create_table "rankings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "supports", force: :cascade do |t|
@@ -74,6 +78,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_14_193745) do
     t.string "email"
     t.string "password"
     t.string "username"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

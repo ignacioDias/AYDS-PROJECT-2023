@@ -5,14 +5,28 @@
     <link href="<%= url('/style.css') %>" rel="stylesheet" type="text/css"/>
 </head>
 <body>
+    <% if @error %>
+    <div class="alert alert-danger" role="alert">
+      <%= @error %>
+    </div>
+  <% end %>
     <form action="/formulario" method="POST">
             <h1>CulturAR</h1>
-            <input type="text" name="username" placeholder="username">
-            <input type="email" id="email" name="email" placeholder="email"/>
-            <input type="password" id="password" name="password" placeholder="password"/>
-        <div class="input-group">
-            <input type="password" id="password_repeat" name="password_repeat" placeholder="repeat password" required>
-        <button type="submit">Submit</button>
+            <div class="input-group">
+                <input type="text" name="username" placeholder="username">
+            </div>
+            <div class="input-group">
+                <input type="email" id="email" name="email" placeholder="email"/>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" name="password" placeholder="password"/>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password_repeat" name="password_repeat" placeholder="repeat password"/>
+            </div>
+            <div class="input-group">
+                <button type="submit">Submit</button>
+            </div>
     </form>
 </body>
 </html>
