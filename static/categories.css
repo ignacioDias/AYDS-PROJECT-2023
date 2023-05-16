@@ -1,0 +1,66 @@
+/* Resetear valores predeterminados */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fondo oscuro */
+body {
+    background-color: #222;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilos para las categorías */
+.categorias {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+
+.categoria {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 250px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.categoria:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.categoria h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.descripcion {
+    display: none;
+    margin-top: 10px;
+}
+
+.descripcion p {
+    font-size: 14px;
+    text-align: justify;
+}
+
+/* Estilo para categoría activa */
+.categoria-activa {
+    border: 2px solid #fff;
+}
+
+.descripcion-activa {
+    display: block;
+}
+

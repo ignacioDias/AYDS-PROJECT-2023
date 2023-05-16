@@ -36,7 +36,7 @@ class App < Sinatra::Application
   end 
 
   get '/registro' do
-    erb :index
+    erb :register
   end
 
   post '/inicio' do
@@ -46,15 +46,22 @@ class App < Sinatra::Application
   get '/showLogin' do
     erb :login
   end
+
+  get '/lobby' do
+    erb :lobby
+  end
   
   post '/login' do
-    @user = User.find_or_create_by(username: params[:username], password: params[:password])
-    redirect '/'
+    user = User.find_by(username: params[:username])
+    passInput = params[:password]
+    if user.password == passInput
+      redirect '/lobby'
+    else
+      erb :login
+    end
   end
 
   post '/formulario' do
-   # @user = User.find_or_create_by(username: params[:username], email: params[:email], password: params[:password])
-    #redirect '/'
     # Recuperar los valores de los campos del formulario
     email = params[:email]
     username = params[:username]
@@ -64,13 +71,20 @@ class App < Sinatra::Application
     # Verificar que las contraseñas sean iguales
     if password == password_confirmation
       # Las contraseñas coinciden, crear la cuenta
-      user = User.create(email: email, username: username, password: password)
-      # Redirigir a la página de inicio de sesión
-      redirect '/showLogin'
+      user = User.new(email: email, username: username, password: password)
+      user.created_at = Time.now
+      user.update_at = Time.now
+
+      if user.save
+        # Redirigir a la página de inicio de sesión
+        redirect '/showLogin'
+      else
+        erb :register
+      end
     else
       # Las contraseñas no coinciden, mostrar un mensaje de error
       @error = "Las contraseñas no coinciden"
-      erb :index
+      erb :register
     end
   end
 
