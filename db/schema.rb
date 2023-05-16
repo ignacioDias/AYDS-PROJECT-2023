@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_16_191300) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_16_192425) do
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -38,6 +38,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_16_191300) do
     t.integer "numLevel"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "category_id"
+    t.index ["category_id"], name: "index_levels_on_category_id", unique: true
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -60,7 +62,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_16_191300) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "exam_id"
+    t.integer "level_id"
     t.index ["exam_id"], name: "index_questions_on_exam_id", unique: true
+    t.index ["level_id"], name: "index_questions_on_level_id", unique: true
   end
 
   create_table "rankings", force: :cascade do |t|
