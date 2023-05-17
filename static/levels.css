@@ -1,0 +1,68 @@
+/* Resetear valores predeterminados */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+header {
+    background-color: #2b2b2b;
+    color: white;
+    padding: 3rem 2rem;
+}
+header h1 {
+    font-size: 3rem;
+    text-align: center;
+}
+.container {
+    width: 400px;
+    margin: 0 auto;
+}
+/* Fondo oscuro */
+body {
+    background-color: #222;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+.niveles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 30px;
+  transition: all 0.3s ease-in-out;
+}
+
+.nivel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  padding: 10px;
+  width: 250px; /* Modificar el ancho a 250px */
+  height: 350px; /* Agregar altura de 350px */
+  transition: all 0.3s ease-in-out;
+  border-radius: 10px; /*Agregar esta línea para hacer las esquinas*/
+  cursor: pointer;
+}
+
+.nivel:hover {
+  transform: scale(1.1); /* Aumentar el tamaño en un 10% */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Cambiar el color de la sombra */
+  transform: scale(1.05);
+  background-color: #2b2b2b;
+  color: #52E2FF;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.nivel h3 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  text-align: center;
+
+}
+
+
+.nivel a {
+  text-decoration: none; /* Quitar subrayado */
+  color: inherit; /* Heredar el color del texto del elemento padre */
+}
