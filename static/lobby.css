@@ -15,10 +15,11 @@ body {
 /* Estilos para las categorías */
 .categorias {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    margin: 20px;
+    margin: 30px;
 }
 
 .categoria {
@@ -29,13 +30,15 @@ body {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 250px;
+    width: 750px;
     transition: all 0.3s ease-in-out;
     cursor: pointer;
 }
 
 .categoria:hover {
     transform: scale(1.05);
+    border: 1px solid #52E2FF;
+    color: #52E2FF;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
@@ -46,21 +49,8 @@ body {
 }
 
 .descripcion {
-    display: none;
+    display: block;
     margin-top: 10px;
-}
-
-.descripcion p {
     font-size: 14px;
     text-align: justify;
 }
-
-/* Estilo para categoría activa */
-.categoria-activa {
-    border: 2px solid #fff;
-}
-
-.descripcion-activa {
-    display: block;
-}
-

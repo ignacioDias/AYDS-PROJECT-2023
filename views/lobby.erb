@@ -1,30 +1,18 @@
 <html>
   <head>
-    
-    <script src="<%= url('/categories.js') %>"></script>
-        <link href="<%= url('/categories.css') %>" rel="stylesheet" type="text/css"/>
-
+    <link href="<%= url('/lobby.css') %>" rel="stylesheet" type="text/css"/>
   </head>
   <body>
     <div class="categorias">
-      <div class="categoria">
-        <h3 onclick="mostrarDescripcion('categoria1')">Nombre de la categoría 1</h3>
-        <div class="descripcion" id="descripcion-categoria1">
-          <p>Descripción de la categoría 1.</p>
+      <% @category.each do |c| %>
+        <div class="categoria">
+          <a href="<%= url(c.name.downcase + '/levels') %>">
+          <h3><%= c.name %></h3>
+          <div class="descripcion">
+            <p><%= c.description %></p>
+          </div>
         </div>
-      </div>
-      <div class="categoria">
-        <h3 onclick="mostrarDescripcion('categoria2')">Nombre de la categoría 2</h3>
-        <div class="descripcion" id="descripcion-categoria2">
-          <p>Descripción de la categoría 2.</p>
-        </div>
-      </div>
-      <div class="categoria">
-        <h3 onclick="mostrarDescripcion('categoria3')">Nombre de la categoría 3</h3>
-        <div class="descripcion" id="descripcion-categoria3">
-          <p>Descripción de la categoría 3.</p>
-        </div>
-      </div>
-  </div>
+      <% end %>
+    </div>
   </body>
 </html>

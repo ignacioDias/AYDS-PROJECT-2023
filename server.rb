@@ -48,6 +48,7 @@ class App < Sinatra::Application
   end
 
   get '/lobby' do
+    @category = Category.all
     erb :lobby
   end
   
@@ -72,8 +73,8 @@ class App < Sinatra::Application
     if password == password_confirmation
       # Las contraseñas coinciden, crear la cuenta
       user = User.new(email: email, username: username, password: password)
-      user.created_at = Time.now
-      user.update_at = Time.now
+      #user.created_at = Time.now
+      #user.update_at = Time.now
 
       if user.save
         # Redirigir a la página de inicio de sesión
@@ -86,6 +87,10 @@ class App < Sinatra::Application
       @error = "Las contraseñas no coinciden"
       erb :register
     end
+  end
+
+  get ':category_name/levels' do
+    erb :levels
   end
 
 end
