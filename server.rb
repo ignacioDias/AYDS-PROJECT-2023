@@ -30,6 +30,9 @@ class App < Sinatra::Application
     end
   end
 
+  enable :sessions
+  set :session_expire_after, 7200
+
   get '/' do
     erb :inicio
     ##erb :index #mostrar index.erb
@@ -61,6 +64,7 @@ class App < Sinatra::Application
       redirect '/showLogin' # Redirige al usuario a la página de inicio de sesión
     elsif user.password == passInput
       @errorPassword = "Contraseña incorrecta"
+      session[:user_id] = user.id
       redirect '/lobby' # Redirige al usuario al lobby si las contraseñas coinciden
     else
       erb :login
@@ -95,7 +99,16 @@ class App < Sinatra::Application
   end
 
   get '/:category_name/levels' do
+    @catName = params[:category_name].capitalize
+    catLvl = Category.find_by(name: @catName)
+    @levelsCat = Level.where(category_id: catLvl.id)
     erb :levels
+  end
+
+  get ':category_name/level_name/questions' do
+    lvlName = params[:level_name].capitalize.to_s
+    lvlQuestion = Level.find_by(name: lvlName)
+    @questionsLvlCat = Question.where(level_id: lvlQuestion.id)
   end
 
 end

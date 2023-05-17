@@ -1,15 +1,16 @@
 <html>
   <head>
-    <link href="<%= url('/levels.css') %>" rel="stylesheet" type="text/css"/>
+    <link href="<%= url('/levels.css') %>?v=1" rel="stylesheet" type="text/css"/>
   </head>
   <body>
     <header>
         <h1 id="title">Levels</h1>
     </header>
     <div class="niveles">
-    <% Level.all.each do |l| %>
+    <% @levelsCat.each do |l| %>
       <div class="nivel">
-        <a href="<%= url(l.name.downcase + '/questions') %>">
+          <!--  gsub(/\s+/, "") es para eliminar espacios-->
+          <a href="<%= url(@catName.downcase.to_s + '/' + l.name.downcase + '/questions') %>">
           <h3><%= l.name %></h3>
           </a> <!-- Mover el enlace <a> aquí -->
       </div>
