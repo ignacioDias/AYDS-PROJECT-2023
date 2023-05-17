@@ -3,16 +3,20 @@
     <link href="<%= url('/lobby.css') %>" rel="stylesheet" type="text/css"/>
   </head>
   <body>
+    <header>
+        <h1 id="title">Categorías</h1>
+    </header>
     <div class="categorias">
-      <% @category.each do |c| %>
-        <div class="categoria">
-          <a href="<%= url(c.name.downcase + '/levels') %>">
+    <% @category.each do |c| %>
+      <div class="categoria">
+        <a href="<%= url(c.name.downcase + '/levels') %>">
           <h3><%= c.name %></h3>
           <div class="descripcion">
             <p><%= c.description %></p>
           </div>
-        </div>
-      <% end %>
-    </div>
+          </a> <!-- Mover el enlace <a> aquí -->
+      </div>
+    <% end %>
+  </div>
   </body>
 </html>
