@@ -14,6 +14,7 @@ header h1 {
     text-align: center;
 }
 
+
 .container {
     width: 400px;
     margin: 0 auto;
@@ -38,7 +39,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 10px;
+  margin: 40px;
   padding: 10px;
   width: 250px; /* Modificar el ancho a 250px */
   height: 350px; /* Agregar altura de 350px */
@@ -68,6 +69,23 @@ body {
   margin-top: 10px;
   font-size: 14px;
   text-align: center;
+}
+
+.image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image img {
+    width: 90%;
+    height: auto;
+    object-fit: contain;
+    transition: all 0.3s ease-in-out;
+}
+
+.categoria:hover .image img {
+    width: 100%;
 }
 
 .categoria a {

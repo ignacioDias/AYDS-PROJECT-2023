@@ -51,6 +51,7 @@ class App < Sinatra::Application
     @category = Category.all
     erb :lobby
   end
+
   
   post '/login' do
     user = User.find_by(username: params[:username])

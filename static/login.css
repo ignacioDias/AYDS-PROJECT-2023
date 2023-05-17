@@ -53,7 +53,7 @@ input[type="password"]:focus, input[type="text"]:focus {
 
 /* Estilos para el botón del formulario */
 button[type="Submit"] {
-    background-color: #4CAF50;
+    background-color: #5DC1B9;
     color: #fff;
     border: none;
     border-radius: 10px;
@@ -64,6 +64,6 @@ button[type="Submit"] {
 }
 
 button[type="Submit"]:hover {
-    background-color: #3e8e41;
+    background-color: #459690;
 }
 

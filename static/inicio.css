@@ -24,7 +24,7 @@ form {
 
 /* Estilos para los botones del formulario */
 button[type="submit"] {
-    background-color: #4CAF50;
+    background-color: #5DC1B9;
     color: #fff;
     border: none;
     border-radius: 10px;
@@ -35,7 +35,7 @@ button[type="submit"] {
 }
 /* Estilos para el botón Sign In */
 button[type="button"] {
-    background-color: #4CAF50;
+    background-color: #5DC1B9;
     color: #fff;
     border: none;
     border-radius: 10px;
@@ -48,5 +48,5 @@ button[type="button"] {
 
 /* Estilo para el botón Sign Up */
 button[type="submit"]:nth-of-type(2) {
-    background-color: #4CAF50; /* Usa el mismo color que el otro botón */
+    background-color: #5DC1B9; /* Usa el mismo color que el otro botón */
 }
