@@ -89,7 +89,7 @@ class App < Sinatra::Application
     end
   end
 
-  get ':category_name/levels' do
+  get '/:category_name/levels' do
     erb :levels
   end
 
