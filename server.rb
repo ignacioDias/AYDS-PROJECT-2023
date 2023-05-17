@@ -52,12 +52,16 @@ class App < Sinatra::Application
     erb :lobby
   end
 
-  
+
   post '/login' do
     user = User.find_by(username: params[:username])
     passInput = params[:password]
-    if user.password == passInput
-      redirect '/lobby'
+    if user.nil?
+      @errorUsername = "Username no encontrado"
+      redirect '/showLogin' # Redirige al usuario a la página de inicio de sesión
+    elsif user.password == passInput
+      @errorPassword = "Contraseña incorrecta"
+      redirect '/lobby' # Redirige al usuario al lobby si las contraseñas coinciden
     else
       erb :login
     end

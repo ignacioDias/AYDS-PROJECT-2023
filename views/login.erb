@@ -5,6 +5,16 @@
     <link href="<%= url('/login.css') %>" rel="stylesheet" type="text/css"/>
 </head>
 <body>
+    <% if @errorUsername %>
+        <div class="alert alert-danger" role="alert">
+            <%= @errorUsername%> 
+        </div>
+    <% end %>
+    <% if @errorPassword %>
+        <div class="alert alert-danger" role="alert">
+            <%= @errorPassword%>
+        </div>
+    <% end %>
     <form action="/login" method="POST">
             <h1>CulturAR</h1>
             <input type="text" name="username" placeholder="username">
