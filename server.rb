@@ -105,10 +105,42 @@ class App < Sinatra::Application
     erb :levels
   end
 
-  get ':category_name/level_name/questions' do
-    lvlName = params[:level_name].capitalize.to_s
-    lvlQuestion = Level.find_by(name: lvlName)
-    @questionsLvlCat = Question.where(level_id: lvlQuestion.id)
+  get '/:category_name/:level_name/questions' do
+    # Obtener el nivel y las preguntas del mismo
+    lvl_name = params[:level_name].capitalize.to_s
+    @lvl = Level.find_by(name: lvl_name)
+    questions = Question.where(level_id: @lvl.id).to_a.shuffle
+
+    # Guardar las preguntas en la sesión y mostrar la primera pregunta
+    session[:questions] = questions
+    session[:current_question] = 0
+    erb :question, locals: { question: questions[0] }
   end
+
+  post '/:category_name/:level_name/questions' do
+    # Obtener la respuesta enviada por el usuario
+    answer = params[:answer]
+
+    # Verificar si la respuesta es correcta
+    current_question = session[:questions][session[:current_question]]
+    if answer.downcase == current_question.answer.downcase
+      # La respuesta es correcta, eliminar la pregunta actual de la lista
+      session[:questions].delete_at(session[:current_question])
+
+      # Mostrar la siguiente pregunta (si existe)
+      if session[:questions].empty?
+        # No hay más preguntas, mostrar mensaje de juego completado
+        erb :game_completed
+      else
+        session[:current_question] %= session[:questions].size
+        next_question = session[:questions][session[:current_question]]
+        erb :question, locals: { question: next_question }
+      end
+    else
+      # La respuesta es incorrecta, volver a mostrar la misma pregunta
+      erb :question, locals: { question: current_question }
+    end
+  end
+
 
 end
