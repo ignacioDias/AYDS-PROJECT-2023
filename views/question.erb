@@ -1,5 +1,6 @@
 <html>
   <head>
+    <link href="<%= url('/question.css') %>?v=1" rel="stylesheet" type="text/css"/>
   </head>
   <body>
     <!-- question.erb -->
@@ -24,7 +25,7 @@
             <label for="option4"><%= question.wrongAnswer3 %></label>
           </div>
         </div>
-        <input type="submit" value="Responder">
+        <input type="submit" value="Responder" class="submit">
       </form>
     </div>
   </body>
