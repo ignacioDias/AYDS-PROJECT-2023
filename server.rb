@@ -1,5 +1,6 @@
 # server.rb
 require 'sinatra/base'
+require 'sinatra/contrib'
 require 'bundler/setup'
 require 'logger'
 require "sinatra/activerecord"
@@ -31,6 +32,7 @@ class App < Sinatra::Application
   end
 
   enable :sessions
+
   set :session_expire_after, 7200
 
   get '/' do
@@ -99,8 +101,8 @@ class App < Sinatra::Application
   end
 
   get '/:category_name/levels' do
-    @catName = params[:category_name].capitalize
-    catLvl = Category.find_by(name: @catName)
+    @@catName = params[:category_name].capitalize
+    catLvl = Category.find_by(name: @@catName)
     @levelsCat = Level.where(category_id: catLvl.id)
     erb :levels
   end
@@ -108,13 +110,13 @@ class App < Sinatra::Application
   get '/:category_name/:level_name/questions' do
     # Obtener el nivel y las preguntas del mismo
     lvl_name = params[:level_name].capitalize.to_s
-    @lvl = Level.find_by(name: lvl_name)
-    questions = Question.where(level_id: @lvl.id).to_a.shuffle
+    @@lvl = Level.find_by(name: lvl_name)
+    questions = Question.where(level_id: @@lvl.id).to_a.shuffle
 
     # Guardar las preguntas en la sesión y mostrar la primera pregunta
     session[:questions] = questions
     session[:current_question] = 0
-    erb :question, locals: { question: questions[0] }
+    erb :question, locals: { question: session[:questions][session[:current_question]] }
   end
 
   post '/:category_name/:level_name/questions' do

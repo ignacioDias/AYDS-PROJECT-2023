@@ -5,7 +5,7 @@
     <!-- question.erb -->
     <div class="question">
       <h2><%= question.question %></h2>
-      <form action="<%= url(@catName.downcase.to_s + '/' + @l.downcase.to_s + '/questions') %>" method="post">
+      <form action="<%= url(@@catName.downcase.to_s + '/' + @@lvl.name.downcase + '/questions') %>" method="post">
         <div class="options">
           <div class="option">
             <input type="radio" name="answer" id="option1" value="<%= question.answer %>">
