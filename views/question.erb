@@ -7,22 +7,12 @@
       <h2><%= question.question %></h2>
       <form action="<%= url(@@catName.downcase.to_s + '/' + @@lvl.name.downcase + '/questions') %>" method="post">
         <div class="options">
-          <div class="option">
-            <input type="radio" name="answer" id="option1" value="<%= question.answer %>">
-            <label for="option1"><%= question.answer %></label>
-          </div>
-          <div class="option">
-            <input type="radio" name="answer" id="option2" value="<%= question.wrongAnswer1 %>">
-            <label for="option2"><%= question.wrongAnswer1 %></label>
-          </div>
-          <div class="option">
-            <input type="radio" name="answer" id="option3" value="<%= question.wrongAnswer2 %>">
-            <label for="option3"><%= question.wrongAnswer2 %></label>
-          </div>
-          <div class="option">
-            <input type="radio" name="answer" id="option4" value="<%= question.wrongAnswer3 %>">
-            <label for="option4"><%= question.wrongAnswer3 %></label>
-          </div>
+          <% options.each_with_index do |option, count| %>
+            <div class="option">
+              <input type="radio" name="userAnswer" id="option_<%= count %>" value="<%= option %>">
+              <label for="option_<%= count %>"><%= option %></label>
+            </div>
+          <% end %>
         </div>
         <input type="submit" value="Responder">
       </form>

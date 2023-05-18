@@ -116,16 +116,18 @@ class App < Sinatra::Application
     # Guardar las preguntas en la sesión y mostrar la primera pregunta
     session[:questions] = questions
     session[:current_question] = 0
-    erb :question, locals: { question: session[:questions][session[:current_question]] }
+    answers = [questions[0].answer, questions[0].wrongAnswer1, questions[0].wrongAnswer2, questions[0].wrongAnswer3,].shuffle
+    session[:options] = answers
+    erb :question, locals: { question: questions[0], options: session[:options]}
   end
 
   post '/:category_name/:level_name/questions' do
     # Obtener la respuesta enviada por el usuario
-    answer = params[:answer]
+    userAnswer = params[:userAnswer]
 
     # Verificar si la respuesta es correcta
     current_question = session[:questions][session[:current_question]]
-    if answer.downcase == current_question.answer.downcase
+    if userAnswer.downcase == current_question.answer.downcase
       # La respuesta es correcta, eliminar la pregunta actual de la lista
       session[:questions].delete_at(session[:current_question])
 
@@ -136,11 +138,13 @@ class App < Sinatra::Application
       else
         session[:current_question] %= session[:questions].size
         next_question = session[:questions][session[:current_question]]
-        erb :question, locals: { question: next_question }
+        answers_next = [next_question.answer, next_question.wrongAnswer1, next_question.wrongAnswer2, next_question.wrongAnswer3,].shuffle
+        session[:options] = answers_next
+        erb :question, locals: { question: next_question, options: session[:options]}
       end
     else
       # La respuesta es incorrecta, volver a mostrar la misma pregunta
-      erb :question, locals: { question: current_question }
+      erb :question, locals: { question: current_question, options: session[:options]}
     end
   end
 
