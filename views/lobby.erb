@@ -7,7 +7,7 @@
         <h1 id="title">Categorías</h1>
     </header>
     <div class="categorias">
-    <% @category.each do |c| %>
+    <% @category.each_with_index do |c, count| %>
       <div class="categoria">
         <a href="<%= url(c.name.downcase + '/levels') %>">
           <h3><%= c.name %></h3>
@@ -15,7 +15,7 @@
             <p><%= c.description %></p>
           </div>
           <div class="image">
-            <img src="https://pbs.twimg.com/media/BxCfqm0CIAAciNj?format=png&name=small" />
+            <img src=<%= @linksImages[count] %> />
           </div>
       </div>
     <% end %>
