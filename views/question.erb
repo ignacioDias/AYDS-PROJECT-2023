@@ -4,19 +4,21 @@
   </head>
   <body>
     <!-- question.erb -->
-    <div class="question">
+    <div class="tittle-question">
       <h2><%= question.question %></h2>
-      <form action="<%= url(@@catName.downcase.to_s + '/' + @@lvl.name.downcase + '/questions') %>" method="post">
-        <div class="options">
-          <% options.each_with_index do |option, count| %>
-            <div class="option">
-              <input type="radio" name="userAnswer" id="option_<%= count %>" value="<%= option %>">
-              <label for="option_<%= count %>"><%= option %></label>
-            </div>
-          <% end %>
-        </div>
-        <input type="submit" value="Responder" class="submit">
-      </form>
     </div>
+    <form action="<%= url(@@catName.downcase.to_s + '/' + @@lvl.name.downcase + '/questions') %>" method="post">
+      <div class="options">
+        <% options.each_with_index do |option, count| %>
+          <div class="option">
+            <input type="radio" name="userAnswer" id="option_<%= count %>" value="<%= option %>">
+            <label for="option_<%= count %>"><%= option %></label>
+          </div>
+        <% end %>
+      </div>
+      <div class= "container-submit">
+        <input type="submit" value="Responder" class="submit">
+      </div>
+    </form>
   </body>
 </html>
