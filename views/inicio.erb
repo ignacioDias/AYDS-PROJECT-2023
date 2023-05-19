@@ -17,11 +17,23 @@
 </head>
     <body>
         <form action="/inicio" method="POST">
-          <h1>CulturAR</h1>
-          <h5>Aprende sobre Argentina</h5>
-          <a href="/registro" class="signup"><button type="button">Sign Up</button></a>
-          <a href="/showLogin"><button type="button">Sign In</button></a>
-          <br>
+        <input type="checkbox" id="toggle" />
+        <div id="inicio">
+            <h1>CulturAR</h1>
+            <label for="toggle" class="empezar-label">
+                <button type="button" class="empezar-button">Empezar</button>
+            </label>
+        </div>
+        <div class="cuadro">
+            <div class="contenido">
+                <h1>CulturAR</h1>
+                <h5>Aprende sobre Argentina</h5>
+                <a href="/registro" class="signup"><button type="button">Sign Up</button></a>
+                <a href="/showLogin"><button type="button">Sign In</button></a>
+            </div>
+        </div>
+
         </form>
     </body>
+
 </html>
