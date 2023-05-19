@@ -65,3 +65,18 @@ button[type="Submit"] {
 button[type="Submit"]:hover {
     background-color: #459690;
 }
+
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ff4d4d;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 18px;
+}
+
+.alert p {
+  margin: 0;
+}
