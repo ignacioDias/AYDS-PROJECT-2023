@@ -12,6 +12,7 @@ class App < Sinatra::Application
   def initialize(app = nil)
     super()
   end
+
    set :root,  File.dirname(__FILE__)
    set :views, Proc.new { File.join(root, 'views') }
    set :public_folder, File.join(root, 'static')
@@ -35,6 +36,15 @@ class App < Sinatra::Application
 
   set :session_expire_after, 7200
 
+  before do
+    restricted_paths = ['/lobby', '/:category_name/levels', '/:category_name/:level_name/questions']
+
+    if restricted_paths.include?(request.path_info) && !session[:user_id]
+      redirect '/showLogin'
+    end
+  end
+
+
   get '/' do
     erb :inicio
     ##erb :index #mostrar index.erb
@@ -54,6 +64,7 @@ class App < Sinatra::Application
 
   get '/lobby' do
     @category = Category.all
+    @linksImages = [Arte,Comida,Geografía, "https://static.wikia.nocookie.net/preguntados-juego/images/3/3f/Historia.png/revision/latest?cb=20171009212341&path-prefix=es", "https://pbs.twimg.com/media/BxCfqm0CIAAciNj?format=png&name=small"]
     erb :lobby
   end
 
