@@ -64,7 +64,7 @@ class App < Sinatra::Application
 
   get '/lobby' do
     @category = Category.all
-    @linksImages = ["Arte","Comida","Geografía", "https://static.wikia.nocookie.net/preguntados-juego/images/3/3f/Historia.png/revision/latest?cb=20171009212341&path-prefix=es", "https://pbs.twimg.com/media/BxCfqm0CIAAciNj?format=png&name=small"]
+    @linksImages = ["https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/26365767-fdff-4cc8-9d57-190e7c7a40d8/dcnspzz-85b0f5b9-1cd0-4e68-818e-f63a20d149e0.png/v1/fit/w_300,h_900/ship_by_etermax_fan_dcnspzz-300w.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTAwMCIsInBhdGgiOiJcL2ZcLzI2MzY1NzY3LWZkZmYtNGNjOC05ZDU3LTE5MGU3YzdhNDBkOFwvZGNuc3B6ei04NWIwZjViOS0xY2QwLTRlNjgtODE4ZS1mNjNhMjBkMTQ5ZTAucG5nIiwid2lkdGgiOiI8PTEwMDAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.jUNN9YlIkxO-9fnfYsq0uf5lrEc-k1Aq6A-or7iidt0","https://static.vecteezy.com/system/resources/previews/013/211/278/original/cartoon-of-cow-illustration-cow-in-format-image-illustration-of-cow-free-png.png","https://data.avncloud.com/organizations/2979/icono%20geo1.png", "https://s3.envato.com/files/222054668/king.png", "https://pbs.twimg.com/media/BxCfqm0CIAAciNj?format=png&name=small"]
     erb :lobby
   end
 
