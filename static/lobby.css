@@ -41,7 +41,7 @@ body {
   align-items: center;
   margin: 40px;
   padding: 10px;
-  width: 250px; /* Modificar el ancho a 250px */
+  width: 300px; /* Modificar el ancho a 250px */
   height: 350px; /* Agregar altura de 350px */
   transition: all 0.3s ease-in-out;
   border-radius: 10px; /*Agregar esta línea para hacer las esquinas*/
