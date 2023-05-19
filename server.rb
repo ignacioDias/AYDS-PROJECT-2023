@@ -64,8 +64,8 @@ class App < Sinatra::Application
 
   get '/lobby' do
     @category = Category.all
-    @linksImages = [Arte,Comida,Geografía, "https://static.wikia.nocookie.net/preguntados-juego/images/3/3f/Historia.png/revision/latest?cb=20171009212341&path-prefix=es", "https://pbs.twimg.com/media/BxCfqm0CIAAciNj?format=png&name=small"]
-    erb :lobby
+    @linksImages = ["Arte","Comida","Geografía", "https://static.wikia.nocookie.net/preguntados-juego/images/3/3f/Historia.png/revision/latest?cb=20171009212341&path-prefix=es", "https://pbs.twimg.com/media/BxCfqm0CIAAciNj?format=png&name=small"]
+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    erb :lobby
   end
 
 
