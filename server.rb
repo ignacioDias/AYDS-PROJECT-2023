@@ -42,8 +42,10 @@ class App < Sinatra::Application
     if restricted_paths.include?(request.path_info) && !session[:user_id]
       redirect '/showLogin'
     end
+    if request.path_info == '/' && session[:user_id]
+      redirect '/lobby'
+    end
   end
-
 
   get '/' do
     erb :inicio
