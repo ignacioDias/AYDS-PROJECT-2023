@@ -1,6 +1,14 @@
 <html>
   <head>
     <link href="<%= url('/question.css') %>?v=1" rel="stylesheet" type="text/css"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('.option').on('click', function() {
+          $(this).find('input[type="radio"]').prop('checked', true);
+        });
+      });
+    </script>
   </head>
   <body>
     <!-- question.erb -->
@@ -9,14 +17,14 @@
     </div>
     <form action="<%= url(@@catName.downcase.to_s + '/' + @@lvl.name.downcase + '/questions') %>" method="post">
       <div class="options">
-        <% options.each_with_index do |option, count| %>
+        <% options.each do |option| %>
           <div class="option">
-            <input type="radio" name="userAnswer" id="option_<%= count %>" value="<%= option %>">
-            <label for="option_<%= count %>"><%= option %></label>
+            <input type="radio" name="userAnswer" id="<%= option.downcase %>" value="<%= option %>">
+            <label for="<%= option.downcase %>"><%= option %></label>
           </div>
         <% end %>
       </div>
-      <div class= "container-submit">
+      <div class="container-submit">
         <input type="submit" value="Responder" class="submit">
       </div>
     </form>

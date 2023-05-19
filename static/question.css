@@ -21,24 +21,29 @@ body {
 }
 
 .option {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   margin: 30px;
   padding: 10px;
-  width: 700px; /* Modificar el ancho a 250px */
-  height: 85px; /* Agregar altura de 350px */
-  border-radius: 10px; /*Agregar esta línea para hacer las esquinas*/
+  width: 700px;
+  height: 85px;
+  border-radius: 10px;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
 }
 
-
-.option input[type="radio"]:checked + span {
-  font-weight: bold; /* Aplica estilo a la opción seleccionada */
+.option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
 }
+
+.option input[type="radio"]:checked + label {
+  background-color: #5DC1B9;
+  color: #fff;
+}
+
 
 .option:hover {
   transform: scale(1.1); /* Aumentar el tamaño en un 10% */
@@ -77,3 +82,4 @@ body {
 .submit:hover {
   background-color: #52E2FF;
 }
+
