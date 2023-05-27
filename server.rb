@@ -96,10 +96,10 @@ class App < Sinatra::Application
     if password == password_confirmation
       # Las contraseñas coinciden, crear la cuenta
       user = User.new(email: email, username: username, password: password)
-      profile = Profile.new(user_id: user.id, totalPoints: 0)
-      profile.save
       if user.save
         # Redirigir a la página de inicio de sesión
+        profile = Profile.new(user_id: user.id, totalPoints: 0)
+        profile.save
         redirect '/showLogin'
       else
         erb :register
