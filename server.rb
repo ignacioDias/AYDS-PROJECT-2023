@@ -123,14 +123,13 @@ class App < Sinatra::Application
     # Obtener el nivel y las preguntas del mismo
     lvl_name = params[:level_name].capitalize.to_s
     @@lvl = Level.find_by(name: lvl_name)
-    questions = Question.where(level_id: @@lvl.id).to_a.shuffle
+    @@questions = @@lvl.questions.to_a.shuffle
 
     # Guardar las preguntas en la sesión y mostrar la primera pregunta
-    session[:questions] = questions
     session[:current_question] = 0
-    answers = [questions[0].answer, questions[0].wrongAnswer1, questions[0].wrongAnswer2, questions[0].wrongAnswer3,].shuffle
+    answers = [@@questions[0].answer, @@questions[0].wrongAnswer1, @@questions[0].wrongAnswer2, @@questions[0].wrongAnswer3,].shuffle
     session[:options] = answers
-    erb :question, locals: { question: questions[0], options: session[:options]}
+    erb :question, locals: { question: @@questions[0], options: session[:options]}
   end
 
   post '/:category_name/:level_name/questions' do
@@ -138,18 +137,18 @@ class App < Sinatra::Application
     userAnswer = params[:userAnswer]
 
     # Verificar si la respuesta es correcta
-    current_question = session[:questions][session[:current_question]]
+    current_question = @@questions[session[:current_question]]
     if userAnswer.downcase == current_question.answer.downcase
       # La respuesta es correcta, eliminar la pregunta actual de la lista
-      session[:questions].delete_at(session[:current_question])
+      @@questions.delete_at(session[:current_question])
 
       # Mostrar la siguiente pregunta (si existe)
-      if session[:questions].empty?
+      if @@questions.empty?
         # No hay más preguntas, mostrar mensaje de juego completado
         erb :game_completed
       else
-        session[:current_question] %= session[:questions].size
-        next_question = session[:questions][session[:current_question]]
+        session[:current_question] %= @@questions.size
+        next_question = @@questions[session[:current_question]]
         answers_next = [next_question.answer, next_question.wrongAnswer1, next_question.wrongAnswer2, next_question.wrongAnswer3,].shuffle
         session[:options] = answers_next
         erb :question, locals: { question: next_question, options: session[:options]}
