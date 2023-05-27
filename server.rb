@@ -123,9 +123,10 @@ class App < Sinatra::Application
     lvl_name = params[:level_name].capitalize.to_s
     @@lvl = Level.find_by(name: lvl_name)
     @@questions = @@lvl.questions.to_a.shuffle
-
-    # Guardar las preguntas en la sesión y mostrar la primera pregunta
+    @@tries = 0
+    # Guardar indice de la pregunta actual
     session[:current_question] = 0
+    # Respuestas de la primera pregunta
     answers = [@@questions[0].answer, @@questions[0].wrongAnswer1, @@questions[0].wrongAnswer2, @@questions[0].wrongAnswer3,].shuffle
     session[:options] = answers
     erb :question, locals: { question: @@questions[0], options: session[:options]}
@@ -134,15 +135,22 @@ class App < Sinatra::Application
   post '/:category_name/:level_name/questions' do
     # Obtener la respuesta enviada por el usuario
     userAnswer = params[:userAnswer]
+    # Le doy 0 a points si esta no tiene un valor antes
+    points ||= 0
 
     # Verificar si la respuesta es correcta
     current_question = @@questions[session[:current_question]]
+    points =
     if userAnswer.downcase == current_question.answer.downcase
+      points += current_question.pointQuestion - (tries * 5)
+
+
       # La respuesta es correcta, eliminar la pregunta actual de la lista
       @@questions.delete_at(session[:current_question])
 
       # Mostrar la siguiente pregunta (si existe)
       if @@questions.empty?
+        points = 0
         # No hay más preguntas, mostrar mensaje de juego completado
         erb :game_completed
       else
@@ -153,6 +161,7 @@ class App < Sinatra::Application
         erb :question, locals: { question: next_question, options: session[:options]}
       end
     else
+      @@tries += 1
       # La respuesta es incorrecta, volver a mostrar la misma pregunta
       erb :question, locals: { question: current_question, options: session[:options]}
     end
