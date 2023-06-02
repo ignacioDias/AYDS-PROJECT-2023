@@ -112,45 +112,57 @@ class App < Sinatra::Application
   end
 
   get '/:category_name/levels' do
-    @@catName = params[:category_name].capitalize
-    catLvl = Category.find_by(name: @@catName)
-    @levelsCat = Level.where(category_id: catLvl.id)
+    #Categoria actual
+    @catLvl = category_using_name(params[:category_name])
+    @levelsCat = Level.where(category_id: @@catLvl.id)
     erb :levels
   end
 
   get '/:category_name/:level_name/questions' do
-    # Obtener el nivel y las preguntas del mismo
-    lvl_name = params[:level_name].capitalize.to_s
-    @@lvl = Level.find_by(name: lvl_name)
-    @@questions = @@lvl.questions.to_a.shuffle
-    @@tries = 0
-    # Guardar indice de la pregunta actual
-    session[:current_question] = 0
-    # Respuestas de la primera pregunta
-    answers = [@@questions[0].answer, @@questions[0].wrongAnswer1, @@questions[0].wrongAnswer2, @@questions[0].wrongAnswer3,].shuffle
-    session[:options] = answers
-    erb :question, locals: { question: @@questions[0], options: session[:options]}
+
+    @catLvl = category_using_name(params[:category_name])
+    @lvl = @catLvl.levels.find_by(name: params[:level_name].capitalize)
+    questions = Question.where(level_id = @lvl.id).order("RANDOM()")
+
+    if question.empty?
+      redirect "/#{@catLvl.name.downcase}/levels"
+    else
+      first_question = questions.first
+      redirect "/#{@catLvl.name.downcase}/#{@lvl.name.downcase}/questions/#{first_questions.id}"
+
   end
 
-  post '/:category_name/:level_name/questions' do
+  get ':category_name/:level_name/questions/:question_id' do
+    @catLvl = category_using_name(params[:category_name])
+    level = Level.find_by(name: params[:level_name].capitalize)
+    question = Question.find(params[:question_id])
+    answers = question.select(:answer, :wrongAnswer1, :wrongAnswer2, :wrongAnswer3).to_a.shuffle
+
+    erb :question, locals: {lvl: = level, question: question, options: answers}
+
+  end
+
+  post ':category_name/:level_name/questions/:question_id' do
+
+    current_question = Question.find(params[:question_id])
     # Obtener la respuesta enviada por el usuario
     userAnswer = params[:userAnswer]
     # Le doy 0 a points si esta no tiene un valor antes
-    points ||= 0
+    penaltyPoint ||= 0
+    totalPoint ||= 0
 
     # Verificar si la respuesta es correcta
-    current_question = @@questions[session[:current_question]]
-    points =
     if userAnswer.downcase == current_question.answer.downcase
-      points += current_question.pointQuestion - (tries * 5)
+      @totalPoint += current_question.pointQuestion - penaltyPoint
+      
 
-
-      # La respuesta es correcta, eliminar la pregunta actual de la lista
-      @@questions.delete_at(session[:current_question])
-
+      next_questions = Question.where(level_id: params[:level_id]).where.not(id: params[:question_id]).order("RANDOM()").first
       # Mostrar la siguiente pregunta (si existe)
-      if @@questions.empty?
-        points = 0
+      if next_questions.empty?
+        # Se reinicia los puntos totales ganados
+        @totalPoint = 0
+        # Se reinicia los puntos penalizados que se tuvo en la prgunta
+        penaltyPoint = 0
         # No hay más preguntas, mostrar mensaje de juego completado
         erb :game_completed
       else
@@ -158,13 +170,21 @@ class App < Sinatra::Application
         next_question = @@questions[session[:current_question]]
         answers_next = [next_question.answer, next_question.wrongAnswer1, next_question.wrongAnswer2, next_question.wrongAnswer3,].shuffle
         session[:options] = answers_next
+        # Se reinicia los puntos penalizados que se tuvo en la prgunta
+        penaltyPoint = 0;
         erb :question, locals: { question: next_question, options: session[:options]}
       end
     else
-      @@tries += 1
+      tries += 1
+      penaltyPoint -= @@tries * 5
       # La respuesta es incorrecta, volver a mostrar la misma pregunta
       erb :question, locals: { question: current_question, options: session[:options]}
     end
+  end
+
+  # METODOS
+  def category_using_name (catName)
+    return Category.find_by(name: catName.capitalize)
   end
 
 

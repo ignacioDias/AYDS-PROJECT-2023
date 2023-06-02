@@ -15,7 +15,7 @@
     <div class="tittle-question">
       <h2><%= question.question %></h2>
     </div>
-    <form action="<%= url(@@catName.downcase.to_s + '/' + @@lvl.name.downcase + '/questions') %>" method="post">
+    <form action="<%= url(@catLvl.name.downcase.to_s + '/' + "#{lvl.name.downcase}" + '/questions/' + "#{question.id}") %>" method="post">
       <div class="options">
         <% options.each do |option| %>
           <div class="option">
