@@ -6,8 +6,8 @@
 	</head>
 	<body>
 	  <h1>¡Felicidades!</h1>
-	  <h3>Completaste el nivel. Ahora cuentas con: puntos</h3>
-	  <a href="/levels"><button type="submit">Volver a Niveles</button></a>
-	  <a href="<%= url('/lobby') %>"><button type="submit">Volver a Categorías</button></a>
+	  <h3>Completaste el nivel. Ahora cuentas con: <%= @totalPoints%> puntos</h3>
+	  <a href="/<%= @@catName %>/levels"><button type="submit">Volver a Niveles</button></a>
+	  <a href="/lobby"><button type ="submit">Volver a Categorías</button></a>
 	</body>
 </html>
