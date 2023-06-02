@@ -32,24 +32,25 @@ form {
     transition: opacity 0.3s ease-in-out;
 }
 
-#inicio .empezar-label {
+#inicio .empezar-label .empezar-button {
     display: inline-block;
     cursor: pointer;
 }
 
-#inicio .empezar-label .empezar-button {
+#inicio .empezar-button {
     background-color: #5DC1B9;
     color: #fff;
     border: none;
     border-radius: 10px;
     padding: 10px 20px;
     margin: 10px;
+    cursor: pointer;
+    font-size: 16px;
+
     align-items: center;
     justify-content: center;
     text-align: center;
     margin-top: 20px;
-    cursor: pointer;
-    font-size: 16px;
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
 }
