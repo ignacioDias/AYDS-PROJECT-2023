@@ -97,11 +97,12 @@ class App < Sinatra::Application
       # Las contraseñas coinciden, crear la cuenta
       user = User.new(email: email, username: username, password: password)
       if user.save
-        # Redirigir a la página de inicio de sesión
         profile = Profile.new(user_id: user.id, totalPoints: 0)
         profile.save
         record = Record.new(user_id: user.id)
         record.save
+
+        # Redirigir a la página de inicio de sesión
         redirect '/showLogin'
       else
         erb :register
@@ -147,45 +148,70 @@ class App < Sinatra::Application
   post ':category_name/:level_name/questions/:question_id' do
 
     current_question = Question.find(params[:question_id])
+    level = Level.find_by(name: params[:level_name].capitalize)
+
     # Obtener la respuesta enviada por el usuario
     userAnswer = params[:userAnswer]
+
     # Le doy 0 a points si esta no tiene un valor antes
     penaltyPoint ||= 0
     totalPoint ||= 0
 
+    user = User.find(session[:user_id])
+    record = user.record
+
     # Verificar si la respuesta es correcta
     if userAnswer.downcase == current_question.answer.downcase
+      record.questions << current_question
+      record.save
+
       @totalPoint += current_question.pointQuestion - penaltyPoint
       
-      next_questions = Question.where(level_id: params[:level_id]).where.not(id: params[:question_id]).order("RANDOM()").first
+      quest_next = next_question(level, current_question.id)
       # Mostrar la siguiente pregunta (si existe)
-      if next_questions.empty?
+      if quest_next.nil?
         # Se reinicia los puntos totales ganados
-        @totalPoint = 0
+        @totalPoint = nil
         # Se reinicia los puntos penalizados que se tuvo en la prgunta
-        penaltyPoint = 0
+        penaltyPoint = nil
         # No hay más preguntas, mostrar mensaje de juego completado
         erb :game_completed
       else
-        session[:current_question] %= @@questions.size
-        next_question = @@questions[session[:current_question]]
-        answers_next = [next_question.answer, next_question.wrongAnswer1, next_question.wrongAnswer2, next_question.wrongAnswer3,].shuffle
-        session[:options] = answers_next
+        # Se reinicia los puntos totales ganados
+        @totalPoint = nil
         # Se reinicia los puntos penalizados que se tuvo en la prgunta
-        penaltyPoint = 0;
-        erb :question, locals: { question: next_question, options: session[:options]}
+        penaltyPoint = nil
+        redirect "/#{params[:category_name]}/#{params[:level_name]}/questions/#{quest_next.id}"
       end
     else
       tries += 1
       penaltyPoint -= @@tries * 5
+      question = Question.find(params[:question_id])
+      answers = question.select(:answer, :wrongAnswer1, :wrongAnswer2, :wrongAnswer3).to_a.shuffle
       # La respuesta es incorrecta, volver a mostrar la misma pregunta
-      erb :question, locals: { question: current_question, options: session[:options]}
+      erb :question, locals: {lvl: level, question: question, options: answers}
     end
   end
 
   # METODOS
   def category_using_name (catName)
     return Category.find_by(name: catName.capitalize)
+  end
+
+  def next_question (level_id, current_question_id)
+    questions = Question.where(level_id: params[:level_id]).where.not(id: params[:question_id]).to_a.shuffle
+    user = User.find(session[:user_id])
+    record = user.record
+    complete_questions = record.to_a
+
+    question.each do |q|
+      if q.id != current_question_id
+        unless complete_questions.include?(q)
+          return q
+        end
+      end
+    end
+    return nil
   end
 
 
