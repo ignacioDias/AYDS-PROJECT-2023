@@ -101,6 +101,7 @@ class App < Sinatra::Application
         profile = Profile.new(user_id: user.id, totalPoints: 0)
         profile.save
         record = Record.new(user_id: user.id)
+        record.save
         redirect '/showLogin'
       else
         erb :register
