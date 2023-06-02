@@ -100,6 +100,7 @@ class App < Sinatra::Application
         # Redirigir a la página de inicio de sesión
         profile = Profile.new(user_id: user.id, totalPoints: 0)
         profile.save
+        record = Record.new(user_id: user.id)
         redirect '/showLogin'
       else
         erb :register
