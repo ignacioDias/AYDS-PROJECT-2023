@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_18_000904) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_02_192529) do
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -69,6 +69,38 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_18_000904) do
   create_table "rankings", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "records", force: :cascade do |t|
+    t.integer "points"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_records_on_user_id", unique: true
+  end
+
+  create_table "records_exams", id: false, force: :cascade do |t|
+    t.integer "records_id"
+    t.integer "exams_id"
+    t.index "\"record_id\", \"exam_id\"", name: "index_records_exams_on_record_id_and_exam_id", unique: true
+    t.index ["exams_id"], name: "index_records_exams_on_exams_id"
+    t.index ["records_id"], name: "index_records_exams_on_records_id"
+  end
+
+  create_table "records_levels", id: false, force: :cascade do |t|
+    t.integer "records_id"
+    t.integer "levels_id"
+    t.index "\"record_id\", \"level_id\"", name: "index_records_levels_on_record_id_and_level_id", unique: true
+    t.index ["levels_id"], name: "index_records_levels_on_levels_id"
+    t.index ["records_id"], name: "index_records_levels_on_records_id"
+  end
+
+  create_table "records_questions", id: false, force: :cascade do |t|
+    t.integer "records_id"
+    t.integer "questions_id"
+    t.index "\"record_id\", \"question_id\"", name: "index_records_questions_on_record_id_and_question_id", unique: true
+    t.index ["questions_id"], name: "index_records_questions_on_questions_id"
+    t.index ["records_id"], name: "index_records_questions_on_records_id"
   end
 
   create_table "supports", force: :cascade do |t|

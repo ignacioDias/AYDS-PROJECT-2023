@@ -129,7 +129,7 @@ class App < Sinatra::Application
     else
       first_question = questions.first
       redirect "/#{@catLvl.name.downcase}/#{@lvl.name.downcase}/questions/#{first_questions.id}"
-
+    end
   end
 
   get ':category_name/:level_name/questions/:question_id' do
@@ -138,7 +138,7 @@ class App < Sinatra::Application
     question = Question.find(params[:question_id])
     answers = question.select(:answer, :wrongAnswer1, :wrongAnswer2, :wrongAnswer3).to_a.shuffle
 
-    erb :question, locals: {lvl: = level, question: question, options: answers}
+    erb :question, locals: {lvl: level, question: question, options: answers}
 
   end
 
@@ -155,7 +155,6 @@ class App < Sinatra::Application
     if userAnswer.downcase == current_question.answer.downcase
       @totalPoint += current_question.pointQuestion - penaltyPoint
       
-
       next_questions = Question.where(level_id: params[:level_id]).where.not(id: params[:question_id]).order("RANDOM()").first
       # Mostrar la siguiente pregunta (si existe)
       if next_questions.empty?
