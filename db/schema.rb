@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_02_235356) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_03_014318) do
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -83,14 +83,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_02_235356) do
   end
 
   create_table "record_levels", force: :cascade do |t|
-    t.integer "record_id", null: false
     t.integer "levels_id", null: false
     t.integer "total_points"
     t.integer "total_tries"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "records_id", null: false
     t.index ["levels_id"], name: "index_record_levels_on_levels_id"
-    t.index ["record_id"], name: "index_record_levels_on_record_id"
+    t.index ["records_id"], name: "index_record_levels_on_records_id"
   end
 
   create_table "record_questions", force: :cascade do |t|
@@ -133,7 +133,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_02_235356) do
   add_foreign_key "record_exams", "exams", column: "exams_id"
   add_foreign_key "record_exams", "records", column: "records_id"
   add_foreign_key "record_levels", "levels", column: "levels_id"
-  add_foreign_key "record_levels", "records"
+  add_foreign_key "record_levels", "records", column: "records_id"
   add_foreign_key "record_questions", "questions", column: "questions_id"
   add_foreign_key "record_questions", "records", column: "records_id"
   add_foreign_key "records", "users"
