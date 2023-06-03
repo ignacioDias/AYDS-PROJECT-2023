@@ -165,7 +165,12 @@ class App < Sinatra::Application
       record.questions << current_question
       record.save
 
-      @totalPoint += current_question.pointQuestion - penaltyPoint
+      # Points
+      current_point = current_question.pointQuestion - penaltyPoint
+      # Points of Level
+      @totalPointLvl += current_point
+      add_points_user(current_point)
+
       
       quest_next = next_question(level, current_question.id)
       # Mostrar la siguiente pregunta (si existe)
@@ -212,6 +217,10 @@ class App < Sinatra::Application
       end
     end
     return nil
+  end
+
+  def add_points_user (current_point_question)
+
   end
 
 

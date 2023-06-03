@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_02_195651) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_02_235356) do
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -34,28 +34,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_02_195651) do
     t.index ["profiles_id"], name: "index_exams_profiles_on_profiles_id"
   end
 
-  create_table "exams_records", id: false, force: :cascade do |t|
-    t.integer "records_id"
-    t.integer "exams_id"
-    t.index "\"record_id\", \"exam_id\"", name: "index_records_exams_on_record_id_and_exam_id", unique: true
-    t.index ["exams_id"], name: "index_exams_records_on_exams_id"
-    t.index ["records_id"], name: "index_exams_records_on_records_id"
-  end
-
   create_table "levels", force: :cascade do |t|
     t.string "name"
     t.integer "numLevel"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "category_id"
-  end
-
-  create_table "levels_records", id: false, force: :cascade do |t|
-    t.integer "records_id"
-    t.integer "levels_id"
-    t.index "\"record_id\", \"level_id\"", name: "index_records_levels_on_record_id_and_level_id", unique: true
-    t.index ["levels_id"], name: "index_levels_records_on_levels_id"
-    t.index ["records_id"], name: "index_levels_records_on_records_id"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -82,24 +66,49 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_02_195651) do
     t.string "wrongAnswer2"
   end
 
-  create_table "questions_records", id: false, force: :cascade do |t|
-    t.integer "records_id"
-    t.integer "questions_id"
-    t.index "\"record_id\", \"question_id\"", name: "index_records_questions_on_record_id_and_question_id", unique: true
-    t.index ["questions_id"], name: "index_questions_records_on_questions_id"
-    t.index ["records_id"], name: "index_questions_records_on_records_id"
-  end
-
   create_table "rankings", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "records", force: :cascade do |t|
-    t.integer "points"
-    t.integer "user_id"
+  create_table "record_exams", force: :cascade do |t|
+    t.integer "records_id", null: false
+    t.integer "exams_id", null: false
+    t.integer "point"
+    t.integer "tries"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["exams_id"], name: "index_record_exams_on_exams_id"
+    t.index ["records_id"], name: "index_record_exams_on_records_id"
+  end
+
+  create_table "record_levels", force: :cascade do |t|
+    t.integer "record_id", null: false
+    t.integer "levels_id", null: false
+    t.integer "total_points"
+    t.integer "total_tries"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["levels_id"], name: "index_record_levels_on_levels_id"
+    t.index ["record_id"], name: "index_record_levels_on_record_id"
+  end
+
+  create_table "record_questions", force: :cascade do |t|
+    t.integer "records_id", null: false
+    t.integer "questions_id", null: false
+    t.integer "points"
+    t.integer "tries"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["questions_id"], name: "index_record_questions_on_questions_id"
+    t.index ["records_id"], name: "index_record_questions_on_records_id"
+  end
+
+  create_table "records", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_records_on_user_id"
   end
 
   create_table "supports", force: :cascade do |t|
@@ -121,4 +130,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_02_195651) do
   add_foreign_key "profiles", "users"
   add_foreign_key "questions", "exams"
   add_foreign_key "questions", "levels"
+  add_foreign_key "record_exams", "exams", column: "exams_id"
+  add_foreign_key "record_exams", "records", column: "records_id"
+  add_foreign_key "record_levels", "levels", column: "levels_id"
+  add_foreign_key "record_levels", "records"
+  add_foreign_key "record_questions", "questions", column: "questions_id"
+  add_foreign_key "record_questions", "records", column: "records_id"
+  add_foreign_key "records", "users"
 end
