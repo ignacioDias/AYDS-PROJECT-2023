@@ -117,7 +117,7 @@ class App < Sinatra::Application
   get '/:category_name/levels' do
     #Categoria actual
     @catLvl = category_using_name(params[:category_name])
-    @levelsCat = Level.where(category_id: @@catLvl.id)
+    @levelsCat = Level.where(category_id: @catLvl.id)
     erb :levels
   end
 
@@ -125,13 +125,13 @@ class App < Sinatra::Application
 
     @catLvl = category_using_name(params[:category_name])
     @lvl = @catLvl.levels.find_by(name: params[:level_name].capitalize)
-    questions = Question.where(level_id = @lvl.id).order("RANDOM()")
+    questions = Question.where(level_id:  @lvl.id).order("RANDOM()")
 
-    if question.empty?
+    if questions.empty?
       redirect "/#{@catLvl.name.downcase}/levels"
     else
       first_question = questions.first
-      redirect "/#{@catLvl.name.downcase}/#{@lvl.name.downcase}/questions/#{first_questions.id}"
+      redirect "url(/#{@catLvl.name.downcase}/#{@lvl.name.downcase}/questions/#{first_question.id})"
     end
   end
 
@@ -167,7 +167,7 @@ class App < Sinatra::Application
         # Se reinicia los puntos penalizados que se tuvo en la prgunta
         penaltyPoint = nil
         # Agrego el registro del level completado y devuelvo el total de puntos
-        @totalPoints = add_record_level()
+        @totalPoints = add_record_level(level)
         # No hay más preguntas, mostrar mensaje de juego completado
         erb :game_completed
       else
@@ -213,8 +213,22 @@ class App < Sinatra::Application
     record_question.save
   end
 
-  def add_record_level 
-
+  def add_record_level (level)
+    user = User.find(session[:user_id])
+    record = user.record
+    records_questions = RecordQuestion.find_by(record: record).to_a
+    score = 0
+    total_tries = 0
+    records_questions.each do |rq|
+      level_question = rq.question.level
+      if level_question.id == level.id
+        score += rq.points
+        total_tries += rq.tries
+      end
+    end
+    record_level = RecordLevel.new(record: record, level: level, total_points: score, total_tries: total_tries)
+    record_level.save
+    return score
   end
 
 end
