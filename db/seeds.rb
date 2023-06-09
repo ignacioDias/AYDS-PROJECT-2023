@@ -80,6 +80,17 @@ Question.create(question: "¿En qué año murió Cerati?", answer: "2014", wrong
 
 
 
-Question.create(question: "¿?", answer: "", wrongAnswer1: "", wrongAnswer3: "", pointQuestion: 5, exam_id: nil, level_id: 4, wrongAnswer2: "")
-Question.create(question: "¿?", answer: "", wrongAnswer1: "", wrongAnswer3: "", pointQuestion: 10, exam_id: nil, level_id: 5, wrongAnswer2: "")
-Question.create(question: "¿?", answer: "", wrongAnswer1: "", wrongAnswer3: "", pointQuestion: 15, exam_id: nil, level_id: 6, wrongAnswer2: "")
+Question.create(question: "¿De qué puede ser una milanesa?", answer: "Todas son correctas", wrongAnswer1: "Carne", wrongAnswer3: "Pollo", pointQuestion: 5, exam_id: nil, level_id: 4, wrongAnswer2: "Pescado")
+Question.create(question: "¿Qué se suele comer el 25 de mayo?", answer: "Locro", wrongAnswer1: "Todo menos carne", wrongAnswer3: "Pastas", pointQuestion: 5, exam_id: nil, level_id: 4, wrongAnswer2: "Pescado")
+Question.create(question: "¿Qué se suele comer sólo en navidad?", answer: "Vitel Toné", wrongAnswer1: "Pescado", wrongAnswer3: "Pastas", pointQuestion: 5, exam_id: nil, level_id: 4, wrongAnswer2: "Milanesa")
+Question.create(question: "¿Qué tiene la salsa bolognesa que otras no?", answer: "Carne molida", wrongAnswer1: "Hongos", wrongAnswer3: "Nada, sólo es salsa", pointQuestion: 5, exam_id: nil, level_id: 4, wrongAnswer2: "Verdeo")
+
+Question.create(question: "¿De dónde es el Fernet?", answer: "Italia", wrongAnswer1: "Argentina", wrongAnswer3: "Uruguay", pointQuestion: 10, exam_id: nil, level_id: 5, wrongAnswer2: "España")
+Question.create(question: "¿Cuál es la comida favorita de Messi?", answer: "Milanesa Napolitana", wrongAnswer1: "Asado", wrongAnswer3: "Empanadas", pointQuestion: 10, exam_id: nil, level_id: 5, wrongAnswer2: "Pastas")
+Question.create(question: "¿Con qué se hace el Pritteado, además de Pritty?", answer: "Vino", wrongAnswer1: "Vodka", wrongAnswer3: "Fernet", pointQuestion: 10, exam_id: nil, level_id: 5, wrongAnswer2: "Gin")
+Question.create(question: "¿Con qué se suele acompañar el asado?", answer: "Ensalada", wrongAnswer1: "Todas son correctas", wrongAnswer3: "Puré", pointQuestion: 10, exam_id: nil, level_id: 5, wrongAnswer2: "Pasta")
+Question.create(question: "¿Con qué se suele mezclar tomar el Gancia?", answer: "Sprite", wrongAnswer1: "Seven up", wrongAnswer3: "Pritty", pointQuestion: 10, exam_id: nil, level_id: 5, wrongAnswer2: "Fanta")
+
+Question.create(question: "¿De qué animal está hecho el chorizo?", answer: "Cerdo", wrongAnswer1: "Vaca", wrongAnswer3: "Pollo", pointQuestion: 15, exam_id: nil, level_id: 6, wrongAnswer2: "Cordero")
+Question.create(question: "¿Qué tiene el queso azul?", answer: "Tiene hongos", wrongAnswer1: "Tintes naturales", wrongAnswer3: "Mezclas con otros lácteos", pointQuestion: 15, exam_id: nil, level_id: 6, wrongAnswer2: "La leche")
+Question.create(question: "¿De qué parte de la vaca es el matambre?", answer: "La panza", wrongAnswer1: "La espalda", wrongAnswer3: "La nalga", pointQuestion: 15, exam_id: nil, level_id: 6, wrongAnswer2: "La costilla")
