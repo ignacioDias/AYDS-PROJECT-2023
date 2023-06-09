@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_03_014318) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_09_151809) do
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -72,36 +72,36 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_03_014318) do
   end
 
   create_table "record_exams", force: :cascade do |t|
-    t.integer "records_id", null: false
-    t.integer "exams_id", null: false
+    t.integer "record_id", null: false
+    t.integer "exam_id", null: false
     t.integer "point"
     t.integer "tries"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["exams_id"], name: "index_record_exams_on_exams_id"
-    t.index ["records_id"], name: "index_record_exams_on_records_id"
+    t.index ["exam_id"], name: "index_record_exams_on_exam_id"
+    t.index ["record_id"], name: "index_record_exams_on_record_id"
   end
 
   create_table "record_levels", force: :cascade do |t|
-    t.integer "levels_id", null: false
+    t.integer "level_id", null: false
     t.integer "total_points"
     t.integer "total_tries"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "records_id", null: false
-    t.index ["levels_id"], name: "index_record_levels_on_levels_id"
-    t.index ["records_id"], name: "index_record_levels_on_records_id"
+    t.integer "record_id", null: false
+    t.index ["level_id"], name: "index_record_levels_on_level_id"
+    t.index ["record_id"], name: "index_record_levels_on_record_id"
   end
 
   create_table "record_questions", force: :cascade do |t|
-    t.integer "records_id", null: false
-    t.integer "questions_id", null: false
+    t.integer "record_id", null: false
+    t.integer "question_id", null: false
     t.integer "points"
     t.integer "tries"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["questions_id"], name: "index_record_questions_on_questions_id"
-    t.index ["records_id"], name: "index_record_questions_on_records_id"
+    t.index ["question_id"], name: "index_record_questions_on_question_id"
+    t.index ["record_id"], name: "index_record_questions_on_record_id"
   end
 
   create_table "records", force: :cascade do |t|
@@ -130,11 +130,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_03_014318) do
   add_foreign_key "profiles", "users"
   add_foreign_key "questions", "exams"
   add_foreign_key "questions", "levels"
-  add_foreign_key "record_exams", "exams", column: "exams_id"
-  add_foreign_key "record_exams", "records", column: "records_id"
-  add_foreign_key "record_levels", "levels", column: "levels_id"
-  add_foreign_key "record_levels", "records", column: "records_id"
-  add_foreign_key "record_questions", "questions", column: "questions_id"
-  add_foreign_key "record_questions", "records", column: "records_id"
+  add_foreign_key "record_exams", "exams"
+  add_foreign_key "record_exams", "records"
+  add_foreign_key "record_levels", "levels"
+  add_foreign_key "record_levels", "records"
+  add_foreign_key "record_questions", "questions"
+  add_foreign_key "record_questions", "records"
   add_foreign_key "records", "users"
 end

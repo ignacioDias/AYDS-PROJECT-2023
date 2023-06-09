@@ -121,38 +121,38 @@ class App < Sinatra::Application
     erb :levels
   end
 
-  get '/:category_name/:level_name/questions' do
+  get '/:category_name/:level_name/questions/:question_id' do
+    @catLvl = category_using_name(params[:category_name])
+    level = Level.find_by(name: params[:level_name].capitalize)
+    question = Question.find_by(id: params[:question_id].to_i)
+    answers = [question.answer, question.wrongAnswer1, question.wrongAnswer2, question.wrongAnswer3].shuffle
+    erb :question, locals: {lvl: level, question: question, options: answers}
+  end
 
+  get '/:category_name/:level_name/questions' do
     @catLvl = category_using_name(params[:category_name])
     @lvl = @catLvl.levels.find_by(name: params[:level_name].capitalize)
     questions = Question.where(level_id:  @lvl.id).order("RANDOM()")
-
     if questions.empty?
-      redirect "/#{@catLvl.name.downcase}/levels"
+      redirect to("/#{params[:category_name]}/levels")
     else
       first_question = questions.first
-      redirect "url(/#{@catLvl.name.downcase}/#{@lvl.name.downcase}/questions/#{first_question.id})"
+      #el URI.encode es para tratar los espacios y caracteres correctamente
+      encode_lvl_name = URI.encode(params[:level_name])
+      redirect "/#{params[:category_name]}/#{encode_lvl_name}/questions/#{first_question.id}"
     end
   end
 
-  get ':category_name/:level_name/questions/:question_id' do
-    @catLvl = category_using_name(params[:category_name])
-    level = Level.find_by(name: params[:level_name].capitalize)
-    question = Question.find(params[:question_id])
-    answers = question.select(:answer, :wrongAnswer1, :wrongAnswer2, :wrongAnswer3).to_a.shuffle
-
-    erb :question, locals: {lvl: level, question: question, options: answers}
-
-  end
-
-  post ':category_name/:level_name/questions/:question_id' do
-
+  
+  post '/:category_name/:level_name/questions/:question_id/resp' do
+    @catName = params[:category_name]
     current_question = Question.find(params[:question_id])
     level = Level.find_by(name: params[:level_name].capitalize)
     # Obtener la respuesta enviada por el usuario
     userAnswer = params[:userAnswer]
     # Le doy 0 a points si esta no tiene un valor antes
     penaltyPoint ||= 0
+    tries ||= 0
 
     # Verificar si la respuesta es correcta
     if userAnswer.downcase == current_question.answer.downcase
@@ -161,11 +161,12 @@ class App < Sinatra::Application
       add_record_question(current_question, current_point, tries)
 
       # Siguiente pregunta
-      quest_next = next_question(level, current_question.id)
+      quest_next = next_question(level.id, current_question.id)
 
       if quest_next.nil?
         # Se reinicia los puntos penalizados que se tuvo en la prgunta
         penaltyPoint = nil
+        tries = nil
         # Agrego el registro del level completado y devuelvo el total de puntos
         @totalPoints = add_record_level(level)
         # No hay más preguntas, mostrar mensaje de juego completado
@@ -173,13 +174,15 @@ class App < Sinatra::Application
       else
         # Se reinicia los puntos penalizados que se tuvo en la prgunta
         penaltyPoint = nil
-        redirect "/#{params[:category_name]}/#{params[:level_name]}/questions/#{quest_next.id}"
+        tries = nil
+        encode_lvl_name = URI.encode(level.name.downcase)
+        redirect "/#{params[:category_name]}/#{encode_lvl_name}/questions/#{quest_next.id}"
       end
     else
       tries += 1
       penaltyPoint -= tries * 5
       question = Question.find(params[:question_id])
-      answers = question.select(:answer, :wrongAnswer1, :wrongAnswer2, :wrongAnswer3).to_a.shuffle
+      answers = [question.answer, question.wrongAnswer1, question.wrongAnswer2, question.wrongAnswer3].shuffle
       # La respuesta es incorrecta, volver a mostrar la misma pregunta
       erb :question, locals: {lvl: level, question: question, options: answers}
     end
@@ -191,42 +194,41 @@ class App < Sinatra::Application
   end
 
   def next_question (level_id, current_question_id)
-    questions = Question.where(level_id: params[:level_id]).where.not(id: params[:question_id]).to_a.shuffle
+    questions = Question.where(level_id: level_id).to_a.shuffle
     user = User.find(session[:user_id])
     record = user.record
-    complete_questions = RecordQuestion.find_by(record: record).to_a
+    record_questions_user = RecordQuestion.where(record_id: record.id)
+    questions_array = record_questions_user.map { |record_question| record_question.question_id}
 
-    question.each do |q|
-      if q.id != current_question_id
-        unless complete_questions.include?(q)
-          return q
-        end
+    questions.each do |q|
+      unless questions_array.include?(q.id)
+        return q
       end
     end
     return nil
   end
 
   def add_record_question (current_question, current_point_question, tries)
-    user = User.find(session[:user_id])
+    user = User.find_by(id: session[:user_id])
     record = user.record
-    record_question = RecordQuestion.new(record: record, question: current_question, point: current_point_question, tries: tries)
+    record_question = RecordQuestion.new(record_id: record.id, question_id: current_question.id, points: current_point_question, tries: tries)
     record_question.save
   end
 
   def add_record_level (level)
     user = User.find(session[:user_id])
     record = user.record
-    records_questions = RecordQuestion.find_by(record: record).to_a
+    records_questions = record.record_questions.to_a
     score = 0
     total_tries = 0
     records_questions.each do |rq|
-      level_question = rq.question.level
+      level_question = Question.find_by(id: rq.question_id).level
       if level_question.id == level.id
         score += rq.points
         total_tries += rq.tries
       end
     end
-    record_level = RecordLevel.new(record: record, level: level, total_points: score, total_tries: total_tries)
+    record_level = RecordLevel.new(record_id: record.id, level: level, total_points: score, total_tries: total_tries)
     record_level.save
     return score
   end
