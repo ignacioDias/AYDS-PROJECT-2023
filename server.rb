@@ -121,33 +121,32 @@ class App < Sinatra::Application
     erb :levels
   end
 
-  get '/:category_name/:level_name/questions/:question_id' do
+  get '/:category_name/levels/:level_id/questions/:question_id' do
     @catLvl = category_using_name(params[:category_name])
-    level = Level.find_by(name: params[:level_name].capitalize)
+    level = Level.find_by(id: params[:level_id])
     question = Question.find_by(id: params[:question_id].to_i)
     answers = [question.answer, question.wrongAnswer1, question.wrongAnswer2, question.wrongAnswer3].shuffle
     erb :question, locals: {lvl: level, question: question, options: answers}
   end
 
-  get '/:category_name/:level_name/questions' do
+  get '/:category_name/levels/:level_id/questions' do
     @catLvl = category_using_name(params[:category_name])
-    @lvl = @catLvl.levels.find_by(name: params[:level_name].capitalize)
+    @lvl = @catLvl.levels.find_by(id: params[:level_id])
     questions = Question.where(level_id:  @lvl.id).order("RANDOM()")
     if questions.empty?
       redirect to("/#{params[:category_name]}/levels")
     else
       first_question = questions.first
       #el URI.encode es para tratar los espacios y caracteres correctamente
-      encode_lvl_name = URI.encode(params[:level_name])
-      redirect "/#{params[:category_name]}/#{encode_lvl_name}/questions/#{first_question.id}"
+      redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/questions/#{first_question.id}"
     end
   end
 
   
-  post '/:category_name/:level_name/questions/:question_id/resp' do
-    @catName = params[:category_name]
+  post '/:category_name/levels/:level_id/questions/:question_id/resp' do
+    @catLvl = category_using_name(params[:category_name])
     current_question = Question.find(params[:question_id])
-    level = Level.find_by(name: params[:level_name].capitalize)
+    level = Level.find_by(id: params[:level_id])
     # Obtener la respuesta enviada por el usuario
     userAnswer = params[:userAnswer]
     # Le doy 0 a points si esta no tiene un valor antes
@@ -175,8 +174,7 @@ class App < Sinatra::Application
         # Se reinicia los puntos penalizados que se tuvo en la prgunta
         penaltyPoint = nil
         tries = nil
-        encode_lvl_name = URI.encode(level.name.downcase)
-        redirect "/#{params[:category_name]}/#{encode_lvl_name}/questions/#{quest_next.id}"
+        redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/questions/#{quest_next.id}"
       end
     else
       tries += 1
@@ -198,10 +196,10 @@ class App < Sinatra::Application
     user = User.find(session[:user_id])
     record = user.record
     record_questions_user = RecordQuestion.where(record_id: record.id)
-    questions_array = record_questions_user.map { |record_question| record_question.question_id}
+    question_ids = record_questions_user.joins(:question).where(questions: { level_id: level_id }).pluck(:question_id)
 
     questions.each do |q|
-      unless questions_array.include?(q.id)
+      unless question_ids.include?(q.id)
         return q
       end
     end

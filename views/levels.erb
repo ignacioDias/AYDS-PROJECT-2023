@@ -10,7 +10,7 @@
     <% @levelsCat.each do |l| %>
       <div class="nivel">
           <!--  gsub(/\s+/, "") es para eliminar espacios-->
-          <a href="<%= url(@catLvl.name.downcase.to_s + '/' + l.name.downcase + '/questions') %>">
+          <a href="<%= url(@catLvl.name.downcase + '/levels/' + l.id.to_s + '/questions') %>">
           <h3><%= l.name %></h3>
           </a> <!-- Mover el enlace <a> aquí -->
       </div>
