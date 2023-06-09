@@ -94,3 +94,19 @@ Question.create(question: "¿Con qué se suele mezclar tomar el Gancia?", answer
 Question.create(question: "¿De qué animal está hecho el chorizo?", answer: "Cerdo", wrongAnswer1: "Vaca", wrongAnswer3: "Pollo", pointQuestion: 15, exam_id: nil, level_id: 6, wrongAnswer2: "Cordero")
 Question.create(question: "¿Qué tiene el queso azul?", answer: "Tiene hongos", wrongAnswer1: "Tintes naturales", wrongAnswer3: "Mezclas con otros lácteos", pointQuestion: 15, exam_id: nil, level_id: 6, wrongAnswer2: "La leche")
 Question.create(question: "¿De qué parte de la vaca es el matambre?", answer: "La panza", wrongAnswer1: "La espalda", wrongAnswer3: "La nalga", pointQuestion: 15, exam_id: nil, level_id: 6, wrongAnswer2: "La costilla")
+
+Question.create(question: "¿En qué provincia está la capital del país?", answer: "No está en ninguna", wrongAnswer1: "Buenos Aires", wrongAnswer3: "Córdoba", pointQuestion: 5, exam_id: nil, level_id: 7, wrongAnswer2: "Santa Fe")
+Question.create(question: "¿En qué provincia está Bariloche?", answer: "Río Negro", wrongAnswer1: "Chubut", wrongAnswer3: "Santa Cruz", pointQuestion: 5, exam_id: nil, level_id: 7, wrongAnswer2: "Neuquén")
+Question.create(question: "¿?", answer: "", wrongAnswer1: "", wrongAnswer3: "", pointQuestion: 5, exam_id: nil, level_id: 7, wrongAnswer2: "")
+Question.create(question: "¿?", answer: "", wrongAnswer1: "", wrongAnswer3: "", pointQuestion: 5, exam_id: nil, level_id: 7, wrongAnswer2: "")
+
+Question.create(question: "¿Cuál es la única provincia limítrofe de Misiones", answer: "Corrientes", wrongAnswer1: "Buenos Aires", wrongAnswer3: "Formosa", pointQuestion: 10, exam_id: nil, level_id: 8, wrongAnswer2: "Chaco")
+Question.create(question: "¿?", answer: "", wrongAnswer1: "", wrongAnswer3: "", pointQuestion: 10, exam_id: nil, level_id: 8, wrongAnswer2: "")
+Question.create(question: "¿?", answer: "", wrongAnswer1: "", wrongAnswer3: "", pointQuestion: 10, exam_id: nil, level_id: 8, wrongAnswer2: "")
+Question.create(question: "¿?", answer: "", wrongAnswer1: "", wrongAnswer3: "", pointQuestion: 10, exam_id: nil, level_id: 8, wrongAnswer2: "")
+Question.create(question: "¿?", answer: "", wrongAnswer1: "", wrongAnswer3: "", pointQuestion: 10, exam_id: nil, level_id: 8, wrongAnswer2: "")
+
+Question.create(question: "¿Dónde queda Rancul?", answer: "La Pampa", wrongAnswer1: "Córdoba", wrongAnswer3: "San Luis", pointQuestion: 15, exam_id: nil, level_id: 9, wrongAnswer2: "Mendoza")
+Question.create(question: "¿Dónde queda General Villegas?", answer: "Buenos Aires", wrongAnswer1: "Córdoba", wrongAnswer3: "La Pampa", pointQuestion: 15, exam_id: nil, level_id: 9, wrongAnswer2: "San Luis")
+Question.create(question: "¿Dónde queda Naschel?", answer: "San Luis", wrongAnswer1: "Córdoba", wrongAnswer3: "San Juan", pointQuestion: 15, exam_id: nil, level_id: 9, wrongAnswer2: "La Rioja")
+Question.create(question: "¿De dónde es Julián Álvarez?", answer: "Calchín", wrongAnswer1: "Córdoba capital", wrongAnswer3: "Buenos Aires", pointQuestion: 15, exam_id: nil, level_id: 9, wrongAnswer2: "Luque")
