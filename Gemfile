@@ -3,6 +3,10 @@ ruby '2.7.5'
 
 source "https://rubygems.org"
 
+group :test do
+    gem 'rspec'
+  end
+
 gem 'multi_json'
 gem 'sinatra-activerecord'
 gem 'sqlite3'
