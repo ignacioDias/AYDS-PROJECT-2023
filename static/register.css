@@ -1,7 +1,6 @@
 /* Resetear valores predeterminados */
 * {
     margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
@@ -66,6 +65,11 @@ button[type="Submit"] {
 button[type="Submit"]:hover {
     background-color: #459690;
 }
+
+
+h2 {
+    margin-bottom: 10px;
+  }
 
 .alert {
   display: flex;

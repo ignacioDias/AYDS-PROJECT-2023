@@ -66,6 +66,8 @@ class App < Sinatra::Application
 
   get '/lobby' do
     @category = Category.all
+    @user = User.find(session[:user_id])
+    @profile = Profile.find_by(user_id: @user.id)
     erb :lobby
   end
 
@@ -95,8 +97,8 @@ class App < Sinatra::Application
     # Verificar que las contraseñas sean iguales
     if password == password_confirmation
       # Las contraseñas coinciden, crear la cuenta
-      user = User.new(email: email, username: username, password: password)
-      if user.save
+      @user = User.new(email: email, username: username, password: password)
+      if @user.save
         profile = Profile.new(user_id: user.id, totalPoints: 0)
         profile.save
         record = Record.new(user_id: user.id)
@@ -109,7 +111,7 @@ class App < Sinatra::Application
       end
     else
       # Las contraseñas no coinciden, mostrar un mensaje de error
-      @error = "Las contraseñas no coinciden"
+      @error = "passwords don't match"
       erb :register
     end
   end
@@ -168,6 +170,8 @@ class App < Sinatra::Application
         tries = nil
         # Agrego el registro del level completado y devuelvo el total de puntos
         @totalPoints = add_record_level(level)
+        #actualizo los puntos en el perfil
+        update_points_profile(@totalPoints)
         # No hay más preguntas, mostrar mensaje de juego completado
         erb :game_completed
       else
@@ -187,6 +191,13 @@ class App < Sinatra::Application
   end
 
   # METODOS
+  #
+  def update_points_profile (points)
+    profile = Profile.find(session[:user_id])
+    new_total = profile.totalPoints + points
+    profile.update(totalPoints: new_total)
+  end
+
   def category_using_name (catName)
     return Category.find_by(name: catName.capitalize)
   end

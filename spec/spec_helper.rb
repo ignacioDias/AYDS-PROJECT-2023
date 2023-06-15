@@ -1,5 +1,5 @@
 require 'sinatra/base'
-  require 'sinatra/activerecord'
+require 'sinatra/activerecord'
 
   ENV['RACK_ENV'] ||= 'test'
   ENV['APP_ENV'] ||= 'test'

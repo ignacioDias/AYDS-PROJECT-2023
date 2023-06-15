@@ -1,11 +1,14 @@
 <html>
   <head>
     <link href="<%= url('/question.css') %>?v=1" rel="stylesheet" type="text/css"/>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-      $(document).ready(function() {
-        $('.option').on('click', function() {
-          $(this).find('input[type="radio"]').prop('checked', true);
+       $(document).ready(function() {
+        $('.option').click(function() {
+          var radioButton = $(this).find('input[type="radio"]');
+          radioButton.prop('checked', true);
+          $('.option').removeClass('selected');
+          $(this).addClass('selected');
         });
       });
     </script>
