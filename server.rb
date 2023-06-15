@@ -99,9 +99,9 @@ class App < Sinatra::Application
       # Las contraseñas coinciden, crear la cuenta
       @user = User.new(email: email, username: username, password: password)
       if @user.save
-        profile = Profile.new(user_id: user.id, totalPoints: 0)
+        profile = Profile.new(user_id:  @user.id, totalPoints: 0)
         profile.save
-        record = Record.new(user_id: user.id)
+        record = Record.new(user_id: @user.id)
         record.save
 
         # Redirigir a la página de inicio de sesión
