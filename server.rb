@@ -152,8 +152,8 @@ class App < Sinatra::Application
     # Obtener la respuesta enviada por el usuario
     userAnswer = params[:userAnswer]
     # Le doy 0 a points si esta no tiene un valor antes
-    penaltyPoint ||= 0
-    tries ||= 0
+      penaltyPoint ||= 0
+      tries ||= 0
 
     # Verificar si la respuesta es correcta
     if userAnswer.downcase == current_question.answer.downcase
@@ -193,7 +193,7 @@ class App < Sinatra::Application
   # METODOS
   #
   def update_points_profile (points)
-    profile = Profile.find(session[:user_id])
+    profile = Profile.find_by(user_id: session[:user_id])
     new_total = profile.totalPoints + points
     profile.update(totalPoints: new_total)
   end
