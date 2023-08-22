@@ -14,4 +14,4 @@ gem 'sqlite3'
 gem 'rake'
 gem 'sinatra'
 gem 'sinatra-contrib'
-gem 'simplecov'
+gem 'simplecov', require: false
