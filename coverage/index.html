@@ -14,7 +14,7 @@
       <img src="./assets/0.12.3/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" class="hide">
-      <div class="timestamp">Generated <abbr class="timeago" title="2023-09-03T19:45:10+00:00">2023-09-03T19:45:10+00:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2023-09-03T21:09:09+00:00">2023-09-03T21:09:09+00:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -23,14 +23,14 @@
     <span class="group_name">All Files</span>
     (<span class="covered_percent">
       <span class="green">
-  100.0%
+  98.2%
 </span>
 
      </span>
      covered at
      <span class="covered_strength">
        <span class="green">
-         1.32
+         1.29
        </span>
     </span> hits/line
     )
@@ -43,11 +43,11 @@
   </div>
 
   <div class="t-line-summary">
-    <b>106</b> relevant lines,
-    <span class="green"><b>106</b> lines covered</span> and
-    <span class="red"><b>0</b> lines missed. </span>
+    <b>111</b> relevant lines,
+    <span class="green"><b>109</b> lines covered</span> and
+    <span class="red"><b>2</b> lines missed. </span>
     (<span class="green">
-  100.0%
+  98.2%
 </span>
 )
   </div>
@@ -83,12 +83,12 @@
         
           <tr class="t-file">
             <td class="strong t-file__name"><a href="#fa6e84402bbd661af0d02774855c79caf4545b98" class="src_link" title="models/category.rb">models/category.rb</a></td>
-            <td class="green strong cell--number t-file__coverage">100.00 %</td>
-            <td class="cell--number">3</td>
+            <td class="red strong cell--number t-file__coverage">71.43 %</td>
+            <td class="cell--number">13</td>
+            <td class="cell--number">7</td>
+            <td class="cell--number">5</td>
             <td class="cell--number">2</td>
-            <td class="cell--number">2</td>
-            <td class="cell--number">0</td>
-            <td class="cell--number">1.00</td>
+            <td class="cell--number">0.71</td>
             
           </tr>
         
@@ -298,8 +298,8 @@
   <div class="header">
     <h3>models/category.rb</h3>
     <h4>
-      <span class="green">
-  100.0%
+      <span class="red">
+  71.43%
 </span>
 
       lines covered
@@ -308,9 +308,9 @@
     
 
     <div class="t-line-summary">
-      <b>2</b> relevant lines.
-      <span class="green"><b>2</b> lines covered</span> and
-      <span class="red"><b>0</b> lines missed.</span>
+      <b>7</b> relevant lines.
+      <span class="green"><b>5</b> lines covered</span> and
+      <span class="red"><b>2</b> lines missed.</span>
     </div>
 
     
@@ -344,6 +344,116 @@
       
         <div>
           <li class="never" data-hits="" data-linenumber="3">
+            
+            
+
+            
+
+            <code class="ruby"></code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="covered" data-hits="1" data-linenumber="4">
+            <span class="hits">1</span>
+            
+
+            
+
+            <code class="ruby">  validate :must_have_at_least_one_level</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="5">
+            
+            
+
+            
+
+            <code class="ruby"></code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="covered" data-hits="1" data-linenumber="6">
+            <span class="hits">1</span>
+            
+
+            
+
+            <code class="ruby">  private</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="7">
+            
+            
+
+            
+
+            <code class="ruby"></code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="covered" data-hits="1" data-linenumber="8">
+            <span class="hits">1</span>
+            
+
+            
+
+            <code class="ruby">  def must_have_at_least_one_level</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="missed" data-hits="0" data-linenumber="9">
+            
+            
+
+            
+
+            <code class="ruby">    if levels.empty?</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="missed" data-hits="0" data-linenumber="10">
+            
+            
+
+            
+
+            <code class="ruby">      errors.add(:base, &quot;Category must have at least one associated level&quot;)</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="11">
+            
+            
+
+            
+
+            <code class="ruby">    end</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="12">
+            
+            
+
+            
+
+            <code class="ruby">  end</code>
+          </li>
+        </div>
+      
+        <div>
+          <li class="never" data-hits="" data-linenumber="13">
             
             
 
