@@ -47,6 +47,20 @@ class App < Sinatra::Application
     end
   end
 
+  before do
+    restricted_paths = ['/:category_name/:level_name/questions']
+    user = User.find(session[:user_id])
+    record = user.record
+    record_questions_user = RecordQuestion.where(record_id: record.id)
+    
+    question.find()
+    question_ids = record_questions_user.joins(:question).where(questions: { level_id: level_id }).pluck(:question_id)
+
+    if restricted_paths.include?(request.path_info) &&  
+      redirect '/lobby'
+    end
+  end  
+
   get '/' do
     erb :inicio
     ##erb :index #mostrar index.erb
@@ -220,8 +234,13 @@ class App < Sinatra::Application
   def add_record_question (current_question, current_point_question, tries)
     user = User.find_by(id: session[:user_id])
     record = user.record
-    record_question = RecordQuestion.new(record_id: record.id, question_id: current_question.id, points: current_point_question, tries: tries)
-    record_question.save
+    
+    record_questions_user = RecordQuestion.where(record_id: record.id)
+    question_ids = record_questions_user.joins(:question).where(questions: { level_id: level_id }).pluck(:question_id)
+    unless(question_ids.include?(current_question_id))
+      record_question = RecordQuestion.new(record_id: record.id, question_id: current_question.id, points: current_point_question, tries: tries)
+      record_question.save
+    end
   end
 
   def add_record_level (level)
