@@ -4,6 +4,6 @@ class CreateExamsProfiles < ActiveRecord::Migration[7.0]
       t.belongs_to :exams
       t.belongs_to :profiles
     end
-    add_index :exams_profiles, [:exam_id, :profile_id], unique: true
+    add_index :exams_profiles, [:exams_id, :profiles_id], unique: true
   end
 end

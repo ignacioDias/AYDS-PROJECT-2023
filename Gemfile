@@ -15,3 +15,4 @@ gem 'rake'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'simplecov', require: false
+gem 'database_cleaner'

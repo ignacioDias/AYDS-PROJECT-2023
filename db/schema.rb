@@ -29,7 +29,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_151809) do
   create_table "exams_profiles", id: false, force: :cascade do |t|
     t.integer "exams_id"
     t.integer "profiles_id"
-    t.index "\"exam_id\", \"profile_id\"", name: "index_exams_profiles_on_exam_id_and_profile_id", unique: true
+    t.index ["exams_id", "profiles_id"], name: "index_exams_profiles_on_exams_id_and_profiles_id", unique: true
     t.index ["exams_id"], name: "index_exams_profiles_on_exams_id"
     t.index ["profiles_id"], name: "index_exams_profiles_on_profiles_id"
   end
