@@ -47,6 +47,7 @@ class App < Sinatra::Application
     end
   end
 
+=begin
   before do
     restricted_paths = ['/:category_name/:level_name/questions']
     user = User.find(session[:user_id])
@@ -56,10 +57,11 @@ class App < Sinatra::Application
     question.find()
     question_ids = record_questions_user.joins(:question).where(questions: { level_id: level_id }).pluck(:question_id)
 
-    if restricted_paths.include?(request.path_info) &&  
+    if restricted_paths.include?(request.path_info) do
       redirect '/lobby'
     end
   end  
+=end
 
   get '/' do
     erb :inicio
@@ -260,5 +262,4 @@ class App < Sinatra::Application
     record_level.save
     return score
   end
-
 end
