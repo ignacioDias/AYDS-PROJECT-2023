@@ -1,6 +1,5 @@
 Question.destroy_all
 
-
 Question.create(question: "¿Dónde nació Lionel Messi?", answer: "Rosario", wrongAnswer1: "C.A. Buenos Aires", wrongAnswer3: "Córdoba", pointQuestion: 10, exam_id: nil, level_id: 13, wrongAnswer2: "La Plata")
 
 Question.create(question: "¿Cuál es el clásico de Rosario Central?", answer: "Newell's", wrongAnswer1: "Colón de Santa Fe", wrongAnswer3: "Unión de Santa Fe", pointQuestion: 10, exam_id: nil, level_id: 13, wrongAnswer2: "Instituto A.C.C.")
@@ -32,11 +31,9 @@ Question.create(question: "¿Quién es el argentino con más mundiales?", answer
 
 Question.create(question: "¿En qué equipo de Inglaterra es ídolo el Kun Agüero?", answer: "Manchester City", wrongAnswer1: "Manchester United", wrongAnswer3: "Chelsea", pointQuestion: 15, exam_id: nil, level_id: 14, wrongAnswer2: "Liverpool")
 
-Question.create(question: "¿En qué equipo de Inglaterra es ídolo el Kun Agüero?", answer: "Manchester City", wrongAnswer1: "Manchester United", wrongAnswer3: "Chelsea", pointQuestion: 15, exam_id: nil, level_id: 14, wrongAnswer2: "Liverpool")
 
 Question.create(question: "¿En dónde se jugó la vuelta de la final de Libertadores entre River y Boca?", answer: "El Santiago Bernabeu", wrongAnswer1: "La Bombonera", wrongAnswer3: "El Monumental", pointQuestion: 15, exam_id: nil, level_id: 14, wrongAnswer2: "El Maracaná")
 
-Question.create(question: "¿En qué equipo de Inglaterra es ídolo el Kun Agüero?", answer: "Manchester City", wrongAnswer1: "Manchester United", wrongAnswer3: "Chelsea", pointQuestion: 15, exam_id: nil, level_id: 14, wrongAnswer2: "Liverpool")
 
 Question.create(question: "¿Quién es el máximo goleador de la historia de River Plate?", answer: "Ángel Labruna", wrongAnswer1: "Oscar Más", wrongAnswer3: "Bernabé Ferreyra", pointQuestion: 20, exam_id: nil, level_id: 15, wrongAnswer2: "Gonzalo Higuaín")
 
@@ -97,8 +94,6 @@ Question.create(question: "¿De qué parte de la vaca es el matambre?", answer: 
 
 Question.create(question: "¿En qué provincia está la capital del país?", answer: "No está en ninguna", wrongAnswer1: "Buenos Aires", wrongAnswer3: "Córdoba", pointQuestion: 5, exam_id: nil, level_id: 7, wrongAnswer2: "Santa Fe")
 Question.create(question: "¿En qué provincia está Bariloche?", answer: "Río Negro", wrongAnswer1: "Chubut", wrongAnswer3: "Santa Cruz", pointQuestion: 5, exam_id: nil, level_id: 7, wrongAnswer2: "Neuquén")
-Question.create(question: "¿?", answer: "", wrongAnswer1: "", wrongAnswer3: "", pointQuestion: 5, exam_id: nil, level_id: 7, wrongAnswer2: "")
-Question.create(question: "¿?", answer: "", wrongAnswer1: "", wrongAnswer3: "", pointQuestion: 5, exam_id: nil, level_id: 7, wrongAnswer2: "")
 
 Question.create(question: "¿Cuál es la única provincia limítrofe de Misiones", answer: "Corrientes", wrongAnswer1: "Buenos Aires", wrongAnswer3: "Formosa", pointQuestion: 10, exam_id: nil, level_id: 8, wrongAnswer2: "Chaco")
 Question.create(question: "¿En qué provincia están las Cataratas del Iguazú?", answer: "Misiones", wrongAnswer1: "Entre Ríos", wrongAnswer3: "Corrientes", pointQuestion: 10, exam_id: nil, level_id: 8, wrongAnswer2: "Chaco")

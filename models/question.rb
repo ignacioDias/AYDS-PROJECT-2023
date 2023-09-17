@@ -19,8 +19,8 @@ class Question < ActiveRecord::Base
 
   def unique_answer
     array_answers = [answer.to_s.downcase, wrongAnswer1.to_s.downcase, wrongAnswer2.to_s.downcase, wrongAnswer3.to_s.downcase]
-    for ans in array_answers do
-        array_answers.shift
+    for i in 0..2
+        ans = array_answers.shift
         if array_answers.include?(ans)
           errors.add(:answer, "must be different answers")
         end
