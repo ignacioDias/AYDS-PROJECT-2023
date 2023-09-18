@@ -191,7 +191,7 @@ class App < Sinatra::Application
       question = Question.find(params[:question_id])
       answers = [question.answer, question.wrongAnswer1, question.wrongAnswer2, question.wrongAnswer3].shuffle
       # La respuesta es incorrecta, volver a mostrar la misma pregunta
-      erb :question, locals: {lvl: level, question: question, options: answers}
+      redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/questions/#{params[:question_id]}"
     end
   end
 
@@ -203,8 +203,13 @@ class App < Sinatra::Application
     profile.update(totalPoints: new_total)
   end
 
-  def category_using_name (catName)
-    return Category.find_by(name: catName.capitalize)
+  def category_using_name (cat_name)
+    return Category.find_by(name: cat_name.capitalize)
+  end
+
+  def level_using_name (cat_name, level_name)
+    category = category_using_name(cat_name)
+    return Level.find(category_id: category.id).where(name: level_name)
   end
 
   def next_question (level_id, current_question_id)
@@ -226,7 +231,7 @@ class App < Sinatra::Application
     user = User.find_by(id: session[:user_id])
     record = user.record
     record_questions_user = RecordQuestion.where(record_id: record.id)
-    question_ids = record_questions_user.joins(:question).where(questions: { level_id: level_id }).pluck(:question_id)
+    question_ids = record_questions_user.where(wrong: true).joins(:question).where(questions: { level_id: level_id }).pluck(:question_id)
     if (is_correctly)
       #Verifico que no se registren 2 veces una respuesta correcta (SE PODRIA SOLUCIONAR CON VALIDACIONES)
       unless(question_ids.include?(current_question.id))
