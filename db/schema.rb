@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_09_151809) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_17_233307) do
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -97,9 +97,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_151809) do
     t.integer "record_id", null: false
     t.integer "question_id", null: false
     t.integer "points"
-    t.integer "tries"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "wrong", default: true
+    t.integer "questions_id"
     t.index ["question_id"], name: "index_record_questions_on_question_id"
     t.index ["record_id"], name: "index_record_questions_on_record_id"
   end
@@ -134,6 +135,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_151809) do
   add_foreign_key "record_exams", "records"
   add_foreign_key "record_levels", "levels"
   add_foreign_key "record_levels", "records"
+  add_foreign_key "record_questions", "questions"
   add_foreign_key "record_questions", "questions"
   add_foreign_key "record_questions", "records"
   add_foreign_key "records", "users"

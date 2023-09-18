@@ -167,23 +167,15 @@ class App < Sinatra::Application
     level = Level.find_by(id: params[:level_id])
     # Obtener la respuesta enviada por el usuario
     userAnswer = params[:userAnswer]
-    # Le doy 0 a points si esta no tiene un valor antes
-      penaltyPoint ||= 0
-      tries ||= 0
-
     # Verificar si la respuesta es correcta
     if userAnswer.downcase == current_question.answer.downcase
       # Cargo el registro de la pregunta completado
-      current_point = current_question.pointQuestion - penaltyPoint
-      add_record_question(current_question, current_point, tries)
-
+      current_point = current_question.pointQuestion
+      add_record_question(params[:level_id], current_question, current_point, true)
       # Siguiente pregunta
       quest_next = next_question(level.id, current_question.id)
 
       if quest_next.nil?
-        # Se reinicia los puntos penalizados que se tuvo en la prgunta
-        penaltyPoint = nil
-        tries = nil
         # Agrego el registro del level completado y devuelvo el total de puntos
         @totalPoints = add_record_level(level)
         #actualizo los puntos en el perfil
@@ -192,13 +184,10 @@ class App < Sinatra::Application
         erb :game_completed
       else
         # Se reinicia los puntos penalizados que se tuvo en la prgunta
-        penaltyPoint = nil
-        tries = nil
         redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/questions/#{quest_next.id}"
       end
     else
-      tries += 1
-      penaltyPoint -= tries * 5
+      add_record_question(params[:level_id], current_question, -5, false)
       question = Question.find(params[:question_id])
       answers = [question.answer, question.wrongAnswer1, question.wrongAnswer2, question.wrongAnswer3].shuffle
       # La respuesta es incorrecta, volver a mostrar la misma pregunta
@@ -222,7 +211,7 @@ class App < Sinatra::Application
     questions = Question.where(level_id: level_id).to_a.shuffle
     user = User.find(session[:user_id])
     record = user.record
-    record_questions_user = RecordQuestion.where(record_id: record.id)
+    record_questions_user = RecordQuestion.where(record_id: record.id, wrong: true)
     question_ids = record_questions_user.joins(:question).where(questions: { level_id: level_id }).pluck(:question_id)
 
     questions.each do |q|
@@ -233,32 +222,36 @@ class App < Sinatra::Application
     return nil
   end
 
-  def add_record_question (current_question, current_point_question, tries)
+  def add_record_question (level_id, current_question, current_point_question, is_correctly)
     user = User.find_by(id: session[:user_id])
     record = user.record
-    
     record_questions_user = RecordQuestion.where(record_id: record.id)
     question_ids = record_questions_user.joins(:question).where(questions: { level_id: level_id }).pluck(:question_id)
-    unless(question_ids.include?(current_question_id))
-      record_question = RecordQuestion.new(record_id: record.id, question_id: current_question.id, points: current_point_question, tries: tries)
-      record_question.save
+    if (is_correctly)
+      #Verifico que no se registren 2 veces una respuesta correcta (SE PODRIA SOLUCIONAR CON VALIDACIONES)
+      unless(question_ids.include?(current_question.id))
+        record_question = RecordQuestion.new(record_id: record.id, question_id: current_question.id, points: current_point_question)
+        record_question.save
+      end
+    else
+        record_question = RecordQuestion.new(record_id: record.id, question_id: current_question.id, points: current_point_question, wrong: false)
+        record_question.save
     end
   end
 
   def add_record_level (level)
     user = User.find(session[:user_id])
     record = user.record
-    records_questions = record.record_questions.to_a
+    records_questions = record.record_questions
+    question_ids = records_questions.joins(:question).where(questions: { level_id: level }).pluck(:question_id)
     score = 0
-    total_tries = 0
-    records_questions.each do |rq|
+    records_questions.to_a.each do |rq|
       level_question = Question.find_by(id: rq.question_id).level
       if level_question.id == level.id
         score += rq.points
-        total_tries += rq.tries
       end
     end
-    record_level = RecordLevel.new(record_id: record.id, level: level, total_points: score, total_tries: total_tries)
+    record_level = RecordLevel.new(record_id: record.id, level: level, total_points: score)
     record_level.save
     return score
   end
