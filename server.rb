@@ -1,4 +1,4 @@
-# server.rb
+#server.rb
 require 'sinatra/base'
 require 'sinatra/contrib'
 require 'bundler/setup'
@@ -6,6 +6,8 @@ require 'logger'
 require "sinatra/activerecord"
 require 'sinatra/reloader' if Sinatra::Base.environment == :development
 require_relative 'models/index'
+require_relative 'routes/get_routes'  # Agrega esta línea
+require_relative 'routes/post_routes' # Agrega esta línea
 
 class App < Sinatra::Application
 
@@ -47,150 +49,7 @@ class App < Sinatra::Application
     end
   end
 
-=begin
-  before do
-    restricted_paths = ['/:category_name/:level_name/questions']
-    user = User.find(session[:user_id])
-    record = user.record
-    record_questions_user = RecordQuestion.where(record_id: record.id)
-    
-    question.find()
-    question_ids = record_questions_user.joins(:question).where(questions: { level_id: level_id }).pluck(:question_id)
-
-    if restricted_paths.include?(request.path_info) do
-      redirect '/lobby'
-    end
-  end  
-=end
-
-  get '/' do
-    erb :inicio
-    ##erb :index #mostrar index.erb
-  end 
-
-  get '/registro' do
-    erb :register
-  end
-
-  post '/inicio' do
-    erb :inicio
-  end
-
-  get '/showLogin' do
-    erb :login
-  end
-
-  get '/lobby' do
-    @category = Category.all
-    @user = User.find(session[:user_id])
-    @profile = Profile.find_by(user_id: @user.id)
-    erb :lobby
-  end
-
-
-  post '/login' do
-    user = User.find_by(username: params[:username])
-    passInput = params[:password]
-    if user.nil?
-      @errorUsername = "Username no encontrado"
-      redirect '/showLogin' # Redirige al usuario a la página de inicio de sesión
-    elsif user.password == passInput
-      @errorPassword = "Contraseña incorrecta"
-      session[:user_id] = user.id
-      redirect '/lobby' # Redirige al usuario al lobby si las contraseñas coinciden
-    else
-      erb :login
-    end
-  end
-
-  post '/formulario' do
-    # Recuperar los valores de los campos del formulario
-    email = params[:email]
-    username = params[:username]
-    password = params[:password]
-    password_confirmation = params[:password_repeat]
-
-    # Verificar que las contraseñas sean iguales
-    if password == password_confirmation
-      # Las contraseñas coinciden, crear la cuenta
-      @user = User.new(email: email, username: username, password: password)
-      if @user.save
-        profile = Profile.new(user_id:  @user.id, totalPoints: 0)
-        profile.save
-        record = Record.new(user_id: @user.id)
-        record.save
-
-        # Redirigir a la página de inicio de sesión
-        redirect '/showLogin'
-      else
-        erb :register
-      end
-    else
-      # Las contraseñas no coinciden, mostrar un mensaje de error
-      @error = "passwords don't match"
-      erb :register
-    end
-  end
-
-  get '/:category_name/levels' do
-    #Categoria actual
-    @catLvl = category_using_name(params[:category_name])
-    @levelsCat = Level.where(category_id: @catLvl.id)
-    @levels_ids = levels_ids_completed()
-    erb :levels
-  end
-
-  get '/:category_name/levels/:level_id/questions/:question_id' do
-    @catLvl = category_using_name(params[:category_name])
-    level = Level.find_by(id: params[:level_id])
-    question = Question.find_by(id: params[:question_id].to_i)
-    answers = [question.answer, question.wrongAnswer1, question.wrongAnswer2, question.wrongAnswer3].shuffle
-    erb :question, locals: {lvl: level, question: question, options: answers}
-  end
-
-  get '/:category_name/levels/:level_id/questions' do
-    @catLvl = category_using_name(params[:category_name])
-    @lvl = @catLvl.levels.find_by(id: params[:level_id])
-    questions = Question.where(level_id:  @lvl.id).order("RANDOM()")
-    if questions.empty?
-      redirect to("/#{params[:category_name]}/levels")
-    else
-      first_question = questions.first
-      #el URI.encode es para tratar los espacios y caracteres correctamente
-      redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/questions/#{first_question.id}"
-    end
-  end
-
-  
-  post '/:category_name/levels/:level_id/questions/:question_id/resp' do
-    @catLvl = category_using_name(params[:category_name])
-    current_question = Question.find(params[:question_id])
-    level = Level.find_by(id: params[:level_id])
-    userAnswer = params[:userAnswer]# Obtener la respuesta enviada por el usuario
-    if userAnswer.downcase == current_question.answer.downcase # Verificar si la respuesta es correcta
-      current_point = current_question.pointQuestion # Cargo el registro de la pregunta completado
-      add_record_question(params[:level_id], current_question, current_point, true)
-            quest_next = next_question(level.id, current_question.id) # Siguiente pregunta
-      if quest_next.nil?
-        @totalPoints = add_record_level(level) # Agrego el registro del level completado y devuelvo el total de puntos
-        update_points_profile(@totalPoints) #actualizo los puntos en el perfil
-        # No hay más preguntas, mostrar mensaje de juego completado
-        erb :game_completed
-      else
-        # Se reinicia los puntos penalizados que se tuvo en la prgunta
-        redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/questions/#{quest_next.id}"
-      end
-    else
-      add_record_question(params[:level_id], current_question, -5, false)
-      question = Question.find(params[:question_id])
-      answers = [question.answer, question.wrongAnswer1, question.wrongAnswer2, question.wrongAnswer3].shuffle
-      # La respuesta es incorrecta, volver a mostrar la misma pregunta
-      redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/questions/#{params[:question_id]}"
-    end
-  end
-
   # METODOS
-  #
   def levels_ids_completed ()
     user = User.find(session[:user_id])
     record = user.record
@@ -233,8 +92,7 @@ class App < Sinatra::Application
     record_questions_user = RecordQuestion.where(record_id: record.id)
     question_ids = record_questions_user.where(wrong: true).joins(:question).where(questions: { level_id: level_id }).pluck(:question_id)
     if (is_correctly)
-      #Verifico que no se registren 2 veces una respuesta correcta (SE PODRIA SOLUCIONAR CON VALIDACIONES)
-      unless(question_ids.include?(current_question.id))
+      unless(question_ids.include?(current_question.id)) #Verifico que no se registren 2 veces una respuesta correcta (SE PODRIA SOLUCIONAR CON VALIDACIONES)
         record_question = RecordQuestion.new(record_id: record.id, question_id: current_question.id, points: current_point_question)
         record_question.save
       end
