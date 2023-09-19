@@ -166,21 +166,14 @@ class App < Sinatra::Application
     @catLvl = category_using_name(params[:category_name])
     current_question = Question.find(params[:question_id])
     level = Level.find_by(id: params[:level_id])
-    # Obtener la respuesta enviada por el usuario
-    userAnswer = params[:userAnswer]
-    # Verificar si la respuesta es correcta
-    if userAnswer.downcase == current_question.answer.downcase
-      # Cargo el registro de la pregunta completado
-      current_point = current_question.pointQuestion
+    userAnswer = params[:userAnswer]# Obtener la respuesta enviada por el usuario
+    if userAnswer.downcase == current_question.answer.downcase # Verificar si la respuesta es correcta
+      current_point = current_question.pointQuestion # Cargo el registro de la pregunta completado
       add_record_question(params[:level_id], current_question, current_point, true)
-      # Siguiente pregunta
-      quest_next = next_question(level.id, current_question.id)
-
+            quest_next = next_question(level.id, current_question.id) # Siguiente pregunta
       if quest_next.nil?
-        # Agrego el registro del level completado y devuelvo el total de puntos
-        @totalPoints = add_record_level(level)
-        #actualizo los puntos en el perfil
-        update_points_profile(@totalPoints)
+        @totalPoints = add_record_level(level) # Agrego el registro del level completado y devuelvo el total de puntos
+        update_points_profile(@totalPoints) #actualizo los puntos en el perfil
         # No hay más preguntas, mostrar mensaje de juego completado
         erb :game_completed
       else
