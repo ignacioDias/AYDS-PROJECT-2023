@@ -136,6 +136,7 @@ class App < Sinatra::Application
     #Categoria actual
     @catLvl = category_using_name(params[:category_name])
     @levelsCat = Level.where(category_id: @catLvl.id)
+    @levels_ids = levels_ids_completed()
     erb :levels
   end
 
@@ -197,6 +198,12 @@ class App < Sinatra::Application
 
   # METODOS
   #
+  def levels_ids_completed ()
+    user = User.find(session[:user_id])
+    record = user.record
+    return RecordLevel.where(record_id: record.id).pluck(:level_id)
+  end
+
   def update_points_profile (points)
     profile = Profile.find_by(user_id: session[:user_id])
     new_total = profile.totalPoints + points

@@ -13,6 +13,7 @@ header h1 {
     font-size: 3rem;
     text-align: center;
 }
+
 .container {
     width: 400px;
     margin: 0 auto;
@@ -59,7 +60,11 @@ body {
   font-size: 24px;
   margin-bottom: 15px;
   text-align: center;
+}
 
+.nivel h4 {
+  text-align: center;
+  color: #0f0;
 }
 
 

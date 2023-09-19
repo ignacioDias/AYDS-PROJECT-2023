@@ -10,8 +10,13 @@
     <% @levelsCat.each do |l| %>
       <div class="nivel">
           <!--  gsub(/\s+/, "") es para eliminar espacios-->
-          <a href="<%= url(@catLvl.name.downcase + '/levels/' + l.id.to_s + '/questions') %>">
+          <% unless(@levels_ids.include?(l.id)) %>
+            <a href="<%= url(@catLvl.name.downcase + '/levels/' + l.id.to_s + '/questions') %>">
+            <% end %>
           <h3><%= l.name %></h3>
+          <% if(@levels_ids.include?(l.id)) %>
+            <h4>Nivel Completado</h4>
+          <% end %>
           </a> <!-- Mover el enlace <a> aquí -->
       </div>
     <% end %>
