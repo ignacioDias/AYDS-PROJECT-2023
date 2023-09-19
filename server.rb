@@ -21,11 +21,11 @@ class App < Sinatra::Application
 
   configure :production, :development do
     enable :logging
-
     logger = Logger.new(STDOUT)
-    logger.level = Logger::DEBUG if development?
+    logger.level = Logger::DEBUG if development? 
     set :logger, logger
   end
+
 
   configure :development do
     register Sinatra::Reloader
@@ -48,7 +48,8 @@ class App < Sinatra::Application
       redirect '/lobby'
     end
   end
-
+  
+  use MyAppGet
   # METODOS
   def levels_ids_completed ()
     user = User.find(session[:user_id])
@@ -118,3 +119,4 @@ class App < Sinatra::Application
     record_level.save
   end
 end
+
