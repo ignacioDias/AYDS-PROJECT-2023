@@ -116,6 +116,5 @@ class App < Sinatra::Application
     end
     record_level = RecordLevel.new(record_id: record.id, level: level, total_points: score)
     record_level.save
-    return score
   end
 end
