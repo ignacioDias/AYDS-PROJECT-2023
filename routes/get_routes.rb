@@ -1,5 +1,8 @@
 # routes/get_routes.rb
 class MyAppGet < Sinatra::Base
+  include App::MyHelpers
+  helpers MyHelpers
+
   get '/' do
     erb :inicio #erb :index #mostrar index.erb
   end 

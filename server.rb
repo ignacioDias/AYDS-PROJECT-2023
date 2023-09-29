@@ -6,8 +6,6 @@ require 'logger'
 require "sinatra/activerecord"
 require 'sinatra/reloader' if Sinatra::Base.environment == :development
 require_relative 'models/index'
-require_relative 'routes/get_routes'  # Agrega esta línea
-require_relative 'routes/post_routes' # Agrega esta línea
 
 class App < Sinatra::Application
 
@@ -48,75 +46,209 @@ class App < Sinatra::Application
       redirect '/lobby'
     end
   end
-  
-  use MyAppGet
-  # METODOS
-  def levels_ids_completed ()
-    user = User.find(session[:user_id])
-    record = user.record
-    return RecordLevel.where(record_id: record.id).pluck(:level_id)
+
+  get '/' do
+    erb :inicio #erb :index #mostrar index.erb
+  end 
+
+  get '/registro' do
+    erb :register
   end
 
-  def update_points_profile (points)
-    profile = Profile.find_by(user_id: session[:user_id])
-    new_total = profile.totalPoints + points
-    profile.update(totalPoints: new_total)
+  post '/inicio' do
+    erb :inicio
   end
 
-  def category_using_name (cat_name)
-    return Category.find_by(name: cat_name.capitalize)
+  get '/showLogin' do
+      erb :login
   end
 
-  def level_using_name (cat_name, level_name)
-    category = category_using_name(cat_name)
-    return Level.find(category_id: category.id).where(name: level_name)
+  get '/lobby' do
+    @category = Category.all
+    @user = User.find(session[:user_id])
+    @profile = Profile.find_by(user_id: @user.id)
+    erb :lobby
   end
 
-  def next_question (level_id, current_question_id)
-    questions = Question.where(level_id: level_id).to_a.shuffle
-    user = User.find(session[:user_id])
-    record = user.record
-    record_questions_user = RecordQuestion.where(record_id: record.id, wrong: true)
-    question_ids = record_questions_user.joins(:question).where(questions: { level_id: level_id }).pluck(:question_id)
+  get '/:category_name/levels' do
+    @catLvl = category_using_name(params[:category_name])#Categoria actual
+    @levelsCat = Level.where(category_id: @catLvl.id)
+    @levels_ids = levels_ids_completed()
+    erb :levels
+  end
 
-    questions.each do |q|
-      unless question_ids.include?(q.id)
-        return q
-      end
+  get '/:category_name/levels/:level_id/questions/:question_id' do
+    @catLvl = category_using_name(params[:category_name])
+    level = Level.find_by(id: params[:level_id])
+    question = Question.find_by(id: params[:question_id].to_i)
+    answers = [question.answer, question.wrongAnswer1, question.wrongAnswer2, question.wrongAnswer3].shuffle
+    erb :question, locals: {lvl: level, question: question, options: answers}
+  end
+
+  get '/:category_name/levels/:level_id/questions' do
+    @catLvl = category_using_name(params[:category_name])
+    @lvl = @catLvl.levels.find_by(id: params[:level_id])
+    questions = Question.where(level_id:  @lvl.id).order("RANDOM()")
+    if questions.empty?
+        redirect to("/#{params[:category_name]}/levels")
+    else
+        first_question = questions.first
+        
+        redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/questions/#{first_question.id}" #el URI.encode es para tratar los espacios y caracteres correctamente
     end
-    return nil
   end
 
-  def add_record_question (level_id, current_question, current_point_question, is_correctly)
-    user = User.find_by(id: session[:user_id])
-    record = user.record
-    record_questions_user = RecordQuestion.where(record_id: record.id)
-    question_ids = record_questions_user.where(wrong: true).joins(:question).where(questions: { level_id: level_id }).pluck(:question_id)
-    if (is_correctly)
-      unless(question_ids.include?(current_question.id)) #Verifico que no se registren 2 veces una respuesta correcta (SE PODRIA SOLUCIONAR CON VALIDACIONES)
-        record_question = RecordQuestion.new(record_id: record.id, question_id: current_question.id, points: current_point_question)
-        record_question.save
+  get '/ranking' do
+    @rankings = Ranking.all.order(points: :desc)
+    erb :ranking
+  end
+
+  post '/inicio' do
+    erb :inicio
+  end
+  post '/login' do
+    user = User.find_by(username: params[:username])
+    passInput = params[:password]
+    if user.nil?
+      @errorUsername = "Username no encontrado"
+      redirect '/showLogin' # Redirige al usuario a la página de inicio de sesión
+    elsif user.password == passInput
+      @errorPassword = "Contraseña incorrecta"
+      session[:user_id] = user.id
+      redirect '/lobby' # Redirige al usuario al lobby si las contraseñas coinciden
+    else
+      erb :login
+    end
+  end
+  post '/formulario' do
+    email = params[:email]
+    username = params[:username]
+    password = params[:password]
+    password_confirmation = params[:password_repeat]
+    if password == password_confirmation # Verificar que las contraseñas sean iguales
+      @user = User.new(email: email, username: username, password: password) # Las contraseñas coinciden, crear la cuenta
+      if @user.save
+        profile = Profile.new(user_id:  @user.id, totalPoints: 0)
+        profile.save
+        record = Record.new(user_id: @user.id)
+        record.save
+        ranking = Ranking.new(user_id: @user.id, points: 0)
+        ranking.save
+        redirect '/showLogin'  # Redirigir a la página de inicio de sesión
+      else
+        erb :register
       end
     else
-        record_question = RecordQuestion.new(record_id: record.id, question_id: current_question.id, points: current_point_question, wrong: false)
-        record_question.save
+      @error = "passwords don't match" # Las contraseñas no coinciden, mostrar un mensaje de error
+      erb :register
     end
+  end
+  get '/:category_name/levels/:level_id/completed' do
+    @totalPoints = getPointLevel(params[:level_id])
+    erb :game_completed # No hay más preguntas, mostrar mensaje de juego completado
+  end
+  post '/:category_name/levels/:level_id/questions/:question_id/resp' do
+      @catLvl = category_using_name(params[:category_name])
+      current_question = Question.find(params[:question_id])
+      level = Level.find_by(id: params[:level_id])
+      userAnswer = params[:userAnswer]# Obtener la respuesta enviada por el usuario
+      if userAnswer.downcase == current_question.answer.downcase # Verificar si la respuesta es correcta
+        current_point = current_question.pointQuestion # Cargo el registro de la pregunta completado
+        add_record_question(params[:level_id], current_question, current_point, true)
+        update_points_profile(current_point) #actualizo los puntos en el perfil
+        quest_next = next_question(level.id, current_question.id) # Siguiente pregunta
+        if quest_next.nil?
+          add_record_level(level) # Agrego el registro del level completado
+          redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/completed"
+        else
+          redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/questions/#{quest_next.id}" # Se reinicia los puntos penalizados que se tuvo en la prgunta
+        end
+      else
+        add_record_question(params[:level_id], current_question, -5, false)
+        update_points_profile(-5) #actualizo los puntos en el perfil
+        question = Question.find(params[:question_id])
+        answers = [question.answer, question.wrongAnswer1, question.wrongAnswer2, question.wrongAnswer3].shuffle
+        redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/questions/#{params[:question_id]}" # La respuesta es incorrecta, volver a mostrar la misma pregunta
+      end
   end
 
-  def add_record_level (level)
-    user = User.find(session[:user_id])
-    record = user.record
-    records_questions = record.record_questions
-    question_ids = records_questions.joins(:question).where(questions: { level_id: level }).pluck(:question_id)
-    score = 0
-    records_questions.to_a.each do |rq|
-      level_question = Question.find_by(id: rq.question_id).level
-      if level_question.id == level.id
-        score += rq.points
+
+  # METODOS
+
+    def getPointLevel (level_id)
+      record = Record.find_by(user_id: session[:user_id])
+      record_level = RecordLevel.find_by(record_id: record.id, level_id: level_id)
+      return record_level.total_points
+    end
+
+    def levels_ids_completed ()
+      user = User.find(session[:user_id])
+      record = user.record
+      return RecordLevel.where(record_id: record.id).pluck(:level_id)
+    end
+
+    def update_points_profile (points)
+      profile = Profile.find_by(user_id: session[:user_id])
+      new_total = profile.totalPoints + points
+      profile.update(totalPoints: new_total)
+      ranking = Ranking.find_by(user_id: session[:user_id])
+      ranking.update(points: new_total)
+    end
+
+    def category_using_name (cat_name)
+      return Category.find_by(name: cat_name.capitalize)
+    end
+
+    def level_using_name (cat_name, level_name)
+      category = category_using_name(cat_name)
+      return Level.find(category_id: category.id).where(name: level_name)
+    end
+
+    def next_question (level_id, current_question_id)
+      questions = Question.where(level_id: level_id).to_a.shuffle
+      user = User.find(session[:user_id])
+      record = user.record
+      record_questions_user = RecordQuestion.where(record_id: record.id, wrong: true)
+      question_ids = record_questions_user.joins(:question).where(questions: { level_id: level_id }).pluck(:question_id)
+
+      questions.each do |q|
+        unless question_ids.include?(q.id)
+          return q
+        end
+      end
+      return nil
+    end
+
+    def add_record_question (level_id, current_question, current_point_question, is_correctly)
+      user = User.find_by(id: session[:user_id])
+      record = user.record
+      record_questions_user = RecordQuestion.where(record_id: record.id)
+      question_ids = record_questions_user.where(wrong: true).joins(:question).where(questions: { level_id: level_id }).pluck(:question_id)
+      if (is_correctly)
+        unless(question_ids.include?(current_question.id)) #Verifico que no se registren 2 veces una respuesta correcta (SE PODRIA SOLUCIONAR CON VALIDACIONES)
+          record_question = RecordQuestion.new(record_id: record.id, question_id: current_question.id, points: current_point_question)
+          record_question.save
+        end
+      else
+        record_question = RecordQuestion.new(record_id: record.id, question_id: current_question.id, points: current_point_question, wrong: false)
+        record_question.save
       end
     end
-    record_level = RecordLevel.new(record_id: record.id, level: level, total_points: score)
-    record_level.save
-  end
+
+    def add_record_level (level)
+      user = User.find(session[:user_id])
+      record = user.record
+      records_questions = record.record_questions
+      question_ids = records_questions.joins(:question).where(questions: { level_id: level }).pluck(:question_id)
+      score = 0
+      records_questions.to_a.each do |rq|
+        level_question = Question.find_by(id: rq.question_id).level
+        if level_question.id == level.id
+          score += rq.points
+        end
+      end
+      record_level = RecordLevel.new(record_id: record.id, level: level, total_points: score)
+      record_level.save
+    end
 end
 
