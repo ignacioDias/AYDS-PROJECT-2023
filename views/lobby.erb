@@ -7,7 +7,7 @@
   </head>
   <body>
     <header>
-        <h1 id="title">Categorías</h1>
+        <h1 id="title">Categorias</h1>
         <% if @user %>
           <div id="user-info">
             <span class="user-name">User: <%= @user.username %></span>
@@ -15,6 +15,11 @@
           </div>
         <% end %>
     </header>
+    <div class="navbar">
+      <div class="ranking">
+      <a href="<%= url('ranking')%>">Ranking</a>
+      </div>
+    </div>
     <div class="categorias">
     <% @category.each_with_index do |c, count| %>
       <div class="categoria">

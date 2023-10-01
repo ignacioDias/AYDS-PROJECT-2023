@@ -70,6 +70,11 @@ class App < Sinatra::Application
     erb :lobby
   end
 
+  get '/ranking' do
+    @rankings = Ranking.joins(:user).pluck('users.username', 'rankings.points')
+    erb :ranking
+  end
+
   get '/:category_name/levels' do
     @catLvl = category_using_name(params[:category_name])#Categoria actual
     @levelsCat = Level.where(category_id: @catLvl.id)
@@ -96,11 +101,6 @@ class App < Sinatra::Application
         
         redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/questions/#{first_question.id}" #el URI.encode es para tratar los espacios y caracteres correctamente
     end
-  end
-
-  get '/ranking' do
-    @rankings = Ranking.all.order(points: :desc)
-    erb :ranking
   end
 
   post '/inicio' do

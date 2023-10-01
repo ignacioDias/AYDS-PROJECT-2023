@@ -6,12 +6,18 @@
 }
 header {
     background-color: #2b2b2b;
-    color: white;
+    color: #0099ff;
     padding: 3rem 2rem;
 }
 header h1 {
     font-size: 3rem;
     text-align: center;
+}
+
+/* Estilos para el barmenu */
+.navbar {
+  background-color: #007BFF; /* Color de fondo del menú */
+  padding: 10px 20px; /* Espaciado interno */
 }
 
 #user-info {
@@ -22,13 +28,13 @@ header h1 {
 
 .user-name {
   font-size: 24px;
-  color: #ff9;
+  color: #0099ff;
   font-weight: bold;
 }
 
 .user-points {
   font-size: 24px;
-  color: #ff9;
+  color: #0099ff;
   font-weight: bold;
 }
 
@@ -44,6 +50,26 @@ body {
     color: #fff;
     font-family: Arial, sans-serif;
 }
+
+.ranking a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.ranking {
+  background-color: #2b2b2b;
+  padding: 10px 20px;
+  border-radius: 5px;
+  display: inline-block;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.ranking:hover {
+  background-color: #0056b3;
+  color: #fff;
+  text-decoration: none;
+}
+
 .categorias {
   display: flex;
   flex-wrap: wrap;
@@ -70,8 +96,7 @@ body {
   transform: scale(1.1); /* Aumentar el tamaño en un 10% */
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Cambiar el color de la sombra */
   transform: scale(1.05);
-  background-color: #2b2b2b;
-  color: #52E2FF;
+  background-color: #007BFF;
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
