@@ -31,11 +31,13 @@
           1,
           1,
           1,
+          1,
           1
         ]
       },
       "/src/models/user.rb": {
         "lines": [
+          1,
           1,
           1,
           1,
@@ -121,6 +123,23 @@
           null
         ]
       },
+      "/src/models/ranking.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          2,
+          2,
+          2,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
       "/src/spec/models/question_spec.rb": {
         "lines": [
           1,
@@ -142,6 +161,25 @@
           1,
           null,
           null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          null
+        ]
+      },
+      "/src/spec/models/ranking_spec.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          1,
+          1,
+          null,
+          1,
           1,
           1,
           1,
@@ -197,6 +235,6 @@
         ]
       }
     },
-    "timestamp": 1694982305
+    "timestamp": 1696299374
   }
 }

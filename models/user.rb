@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   has_one :profile
   has_one :record
+  has_one :ranking
 
   validates :username, presence: true
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP, message: "is not a valid email address" }
