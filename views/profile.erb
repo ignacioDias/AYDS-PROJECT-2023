@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Profile</title>
+    <link href="<%= url('/profile.css') %>?v=1" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+    <h1>Profile Page</h1>
+    <p>Welcome to your profile page, <%= @profile.user.name %>!</p>
+    <p>Your email address is <%= @profile.user.email %>.</p>
+    <p>Your record level is <%= @profile.record_level %>.</p>
+    <!-- Add your profile content here -->
+</body>
+</html>
