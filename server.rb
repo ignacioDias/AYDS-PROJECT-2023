@@ -37,7 +37,7 @@ class App < Sinatra::Application
   set :session_expire_after, 7200
 
   before do
-    restricted_paths = ['/lobby', '/:category_name/levels', '/:category_name/:level_name/questions']
+    restricted_paths = ['/lobby', '/profile', '/:category_name/levels', '/:category_name/:level_name/questions']
 
     if restricted_paths.include?(request.path_info) && !session[:user_id]
       redirect '/showLogin'
@@ -70,6 +70,11 @@ class App < Sinatra::Application
     erb :lobby
   end
 
+  post '/logout' do
+    session.clear
+    redirect '/'
+  end
+  
   get '/ranking' do
     @rankings = Ranking.joins(:user).pluck('users.username', 'rankings.points')
     erb :ranking
@@ -103,9 +108,24 @@ class App < Sinatra::Application
     end
   end
 
-  post '/inicio' do
-    erb :inicio
+  get '/profile' do
+    @user = User.find(session[:user_id])
+    @profile = Profile.find_by(user_id: @user.id)
+    erb :profile
   end
+
+  post '/profile' do
+    @user = User.find(session[:user_id])
+    @profile = Profile.find_by(user_id: @user.id)
+    if params[:description].present?
+      @profile.update(description: params[:description])
+    end
+    if params[:photo_link].present?
+      @profile.update(photo: params[:photo_link])
+    end
+    redirect '/profile'
+  end
+
   post '/login' do
     user = User.find_by(username: params[:username])
     passInput = params[:password]

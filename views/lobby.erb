@@ -16,8 +16,16 @@
         <% end %>
     </header>
     <div class="navbar">
-      <div class="ranking">
-      <a href="<%= url('ranking')%>">Ranking</a>
+      <div class="nav-link ranking">
+        <a href="<%= url('ranking')%>">Ranking</a>
+      </div>
+      <div class="nav-link profile">
+        <a href="<%= url('profile')%>">Perfil</a>
+      </div>
+      <div class="nav-link log-off">
+        <form action="<%= url('logout') %>" method="post">
+          <button type="submit">Log Off</button>
+        </form>
       </div>
     </div>
     <div class="categorias">

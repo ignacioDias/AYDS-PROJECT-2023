@@ -3,12 +3,67 @@
 <head>
     <title>Profile</title>
     <link href="<%= url('/profile.css') %>?v=1" rel="stylesheet" type="text/css"/>
+    <style>
+        #photo-form {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Profile Page</h1>
-    <p>Welcome to your profile page, <%= @profile.user.name %>!</p>
-    <p>Your email address is <%= @profile.user.email %>.</p>
-    <p>Your record level is <%= @profile.record_level %>.</p>
-    <!-- Add your profile content here -->
+    <h1>Perfil</h1>
+    <div class="profile-photo">
+        <% if @profile.photo.present? %>
+           <img src =<%= @profile.photo %> />
+        <% else %>
+            <img src =<%= 'https://yt3.ggpht.com/a/AGF-l7-dEnz0wLybN5e2_UkPSQ-B_dcPRYzbhZF_DA=s900-mo-c-c0xffffffff-rj-k-no' %> />
+        <% end %>
+    </div>
+    <h2><%= @user.username %></h2>
+    <br>
+    <p id="description" contenteditable><%= @profile.description %></p>
+    <br>
+    <p><%= @user.email %>.</p>
+
+    <button id="show-form">Show Upload Form</button>
+
+    <form id="photo-form" action="<%= url('/profile') %>" method="post">
+        <label for="photo_link">Upload a photo via link:</label>
+        <input type="text" id="photo_link" name="photo_link">
+        <button type="submit" id="photo-submit">Upload</button>
+    </form>
+
+    <script>
+        document.getElementById('show-form').addEventListener('click', function() {
+            document.getElementById('photo-form').style.display = 'block';
+            this.style.display = 'none';
+        });
+
+        document.getElementById('photo-submit').addEventListener('click', function() {
+            document.getElementById('show-form').style.display = 'block';
+        });
+
+        const description = document.getElementById('description');
+
+        description.addEventListener('click', () => {
+            description.contentEditable = true;
+            description.style.backgroundColor = '#333';
+            description.focus();
+        });
+
+        description.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                description.contentEditable = false;
+                description.style.backgroundColor = 'transparent';
+                const formData = new FormData();
+                formData.append('description', description.innerText);
+                fetch('/profile', {
+                    method: 'POST',
+                    body: formData
+                });
+            }
+        });
+    </script>
+
 </body>
 </html>
