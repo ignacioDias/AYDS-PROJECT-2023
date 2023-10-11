@@ -15,19 +15,21 @@
           </div>
         <% end %>
     </header>
-    <div class="navbar">
-      <div class="nav-link ranking">
-        <a href="<%= url('ranking')%>">Ranking</a>
-      </div>
-      <div class="nav-link profile">
-        <a href="<%= url('profile')%>">Perfil</a>
-      </div>
-      <div class="nav-link log-off">
-        <form action="<%= url('logout') %>" method="post">
-          <button type="submit">Log Off</button>
-        </form>
-      </div>
-    </div>
+    <nav class="navbar">
+      <ul>
+        <li class="nav-link">
+          <a href="<%= url('ranking') %>">Ranking</a>
+        </li>
+        <li class="nav-link">
+          <a href="<%= url('profile') %>">Perfil</a>
+        </li>
+        <li class="nav-link">
+          <form action="<%= url('logout') %>" method="post">
+            <button type="submit">Log Off</button>
+          </form>
+        </li>
+      </ul>
+    </nav>
     <div class="categorias">
     <% @category.each_with_index do |c, count| %>
       <div class="categoria">

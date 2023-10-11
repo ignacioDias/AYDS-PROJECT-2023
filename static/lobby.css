@@ -13,38 +13,43 @@ header h1 {
     font-size: 3rem;
     text-align: center;
 }
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-}
-
-.nav-link {
-  margin-right: 20px;
-}
-
-.nav-link a {
-  color: #fff;
-  text-decoration: none;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.nav-link:hover a {
-  text-decoration: underline;
-}
-
-.nav-link.profile {
-  float: right;
-}
 #user-info {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
 }
+/* Define styles for the navigation bar */
+.navbar {
+  background-color: #0099ff; /* Background color of the navbar - #0099ff */
+  padding: 10px; /* Add some padding for spacing */
+}
+
+/* Style the list items to display inline */
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar li {
+  display: inline; /* Display list items horizontally */
+  margin-right: 20px; /* Add space between items */
+}
+
+/* Style the links and buttons */
+.nav-link a, .nav-link button {
+  text-decoration: none; /* Remove underlines from links */
+  background-color: #0099ff; /* Background color of buttons and links - #0099ff */
+  color: #fff; /* Text color */
+  padding: 10px 20px; /* Add padding to buttons and links */
+  border: none; /* Remove borders */
+  border-radius: 5px; /* Add rounded corners */
+}
+
+.nav-link a:hover, .nav-link button:hover {
+  background-color: #0077cc; /* Change color on hover (a slightly darker shade of blue) */
+}
+
 
 .user-name {
   font-size: 24px;
@@ -69,25 +74,6 @@ body {
     background-color: #222;
     color: #fff;
     font-family: Arial, sans-serif;
-}
-
-.ranking a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.ranking {
-  background-color: #2b2b2b;
-  padding: 10px 20px;
-  border-radius: 5px;
-  display: inline-block;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.ranking:hover {
-  background-color: #0056b3;
-  color: #fff;
-  text-decoration: none;
 }
 
 .categorias {
