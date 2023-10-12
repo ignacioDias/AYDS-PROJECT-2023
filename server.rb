@@ -81,10 +81,14 @@ class App < Sinatra::Application
   end
 
   get '/:category_name/levels' do
-    @catLvl = category_using_name(params[:category_name])#Categoria actual
-    @levelsCat = Level.where(category_id: @catLvl.id)
-    @levels_ids = levels_ids_completed()
-    erb :levels
+    if session[:user_id]
+      @catLvl = category_using_name(params[:category_name])#Categoria actual
+      @levelsCat = Level.where(category_id: @catLvl.id)
+      @levels_ids = levels_ids_completed()
+      erb :levels
+    else
+      redirect '/lobby'
+    end
   end
 
   get '/:category_name/levels/:level_id/questions/:question_id' do
