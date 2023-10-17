@@ -131,6 +131,7 @@ class App < Sinatra::Application
   end
 
   get '/:category_name/levels/:level_id/completed' do
+    @catLvl = category_using_name(params[:category_name])
     @totalPoints = getPointLevel(params[:level_id])
     erb :game_completed # No hay más preguntas, mostrar mensaje de juego completado
   end
@@ -141,13 +142,14 @@ class App < Sinatra::Application
   get '/:category_name/levels/exam/:exam_id/questions/:question_id' do
     @catLvl = category_using_name(params[:category_name])
     question = Question.find_by(id: params[:question_id].to_i)
+    exam = Exam.find(params[:exam_id])
     answers = [question.answer, question.wrongAnswer1, question.wrongAnswer2, question.wrongAnswer3].shuffle
-    erb :question, locals: {exam: params[:exam_id], question: question, options: answers}
+    erb :question_exam, locals: {exam: exam, question: question, options: answers}
   end
 
   get '/:category_name/levels/exam/:exam_id/questions' do
     @catLvl = category_using_name(params[:category_name])
-    questions = Question.where(exam_id:  params[:exam_id]).order("RANDOM()").pluck(:question_id)
+    questions = Question.where(exam_id:  params[:exam_id]).order("RANDOM()").pluck(:id)
     session[:questions_exam] = questions #Guardo el id de las preguntas
     if questions.empty?
         redirect to("/#{params[:category_name]}/levels")
@@ -156,6 +158,18 @@ class App < Sinatra::Application
         
         redirect "/#{params[:category_name]}/levels/exam/#{params[:exam_id]}/questions/#{first_question}" #el URI.encode es para tratar los espacios y caracteres correctamente
     end
+  end
+
+  get '/:category_name/levels/exam/:exam_id/completed' do
+    @catLvl = category_using_name(params[:category_name])
+    exam = RecordExam.find_by(exam_id: params[:exam_id])
+    @totalPoints = exam.point
+    erb :exam_completed # No hay más preguntas, mostrar mensaje de juego completado
+  end
+
+  get '/:category_name/levels/exam/:exam_id/fail' do
+    @catLvl = category_using_name(params[:category_name])
+    erb :exam_fail
   end
 
   post '/:category_name/levels/exam/:exam_id/questions/:question_id/resp' do
@@ -169,18 +183,14 @@ class App < Sinatra::Application
         exam_finished(@catLvl, params[:exam_id])
         redirect "/#{params[:category_name]}/levels/exam/#{params[:exam_id]}/completed"
       else
-        redirect "/#{params[:category_name]}/levels/exam/#{params[:exam_id]}/questions/#{quest_next}" # Se reinicia los puntos penalizados que se tuvo en la prgunta
+        redirect "/#{params[:category_name]}/levels/exam/#{params[:exam_id]}/questions/#{quest_next}"
       end
     else
-      redirect "/#{params[:category_name]}/levels/exam/#{params[:exam_id]}/fail" # La respuesta es incorrecta, volver a mostrar la misma pregunta
+      redirect "/#{params[:category_name]}/levels/exam/#{params[:exam_id]}/fail" # La respuesta es incorrecta, Repetir el examen
     end
   end
 
-  get '/:category_name/levels/exam/:exam_id/completed' do
-    exam = RecordExam.find_by(exam_id: params[:exam_id])
-    @totalPoints = exam.point
-    erb :game_completed # No hay más preguntas, mostrar mensaje de juego completado
-  end
+
 
   post '/inicio' do
     erb :inicio
@@ -229,11 +239,12 @@ class App < Sinatra::Application
 
   # METODOS
 
-    def exam_finished (cat, exam)
+    def exam_finished (cat, exam_id)
       record = Record.find_by(user_id: session[:user_id])
       points_exam = complete_levels(cat)
+      exam = Exam.find(exam_id)
       record_exam = RecordExam.create(record_id: record.id, exam_id: exam.id, point: points_exam)
-      update_points_profile(poins_exam)
+      update_points_profile(points_exam)
     end
 
     def complete_levels (cat)
