@@ -86,6 +86,7 @@ class App < Sinatra::Application
       @catLvl = category_using_name(params[:category_name])#Categoria actual
       @levelsCat = Level.where(category_id: @catLvl.id)
       @levels_ids = levels_ids_completed()
+      @exam = Exam.find_by(category_id: @catLvl.id)
       erb :levels
     else
       redirect '/lobby'
