@@ -79,9 +79,11 @@ class App < Sinatra::Application
     @catLvl = category_using_name(params[:category_name])#Categoria actual
     @levelsCat = Level.where(category_id: @catLvl.id)
     @levels_ids = levels_ids_completed()
+    @exam = Exam.find_by(category_id: @catLvl.id)
     erb :levels
   end
 
+  ## Questions of Levels
   get '/:category_name/levels/:level_id/questions/:question_id' do
     @catLvl = category_using_name(params[:category_name])
     level = Level.find_by(id: params[:level_id])
@@ -103,9 +105,87 @@ class App < Sinatra::Application
     end
   end
 
+  post '/:category_name/levels/:level_id/questions/:question_id/resp' do
+    @catLvl = category_using_name(params[:category_name])
+    current_question = Question.find(params[:question_id])
+    level = Level.find_by(id: params[:level_id])
+    userAnswer = params[:userAnswer]# Obtener la respuesta enviada por el usuario
+    if userAnswer.downcase == current_question.answer.downcase # Verificar si la respuesta es correcta
+      current_point = current_question.pointQuestion # Cargo el registro de la pregunta completado
+      add_record_question(params[:level_id], current_question, current_point, true)
+      update_points_profile(current_point) #actualizo los puntos en el perfil
+      quest_next = next_question(level.id, current_question.id) # Siguiente pregunta
+      if quest_next.nil?
+        add_record_level(level) # Agrego el registro del level completado
+        redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/completed"
+      else
+        redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/questions/#{quest_next.id}" # Se reinicia los puntos penalizados que se tuvo en la prgunta
+      end
+    else
+      add_record_question(params[:level_id], current_question, -5, false)
+      update_points_profile(-5) #actualizo los puntos en el perfil
+      question = Question.find(params[:question_id])
+      answers = [question.answer, question.wrongAnswer1, question.wrongAnswer2, question.wrongAnswer3].shuffle
+      redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/questions/#{params[:question_id]}" # La respuesta es incorrecta, volver a mostrar la misma pregunta
+    end
+  end
+
+  get '/:category_name/levels/:level_id/completed' do
+    @totalPoints = getPointLevel(params[:level_id])
+    erb :game_completed # No hay más preguntas, mostrar mensaje de juego completado
+  end
+
+
+  ##Questions of Exams
+
+  get '/:category_name/levels/exam/:exam_id/questions/:question_id' do
+    @catLvl = category_using_name(params[:category_name])
+    question = Question.find_by(id: params[:question_id].to_i)
+    answers = [question.answer, question.wrongAnswer1, question.wrongAnswer2, question.wrongAnswer3].shuffle
+    erb :question, locals: {exam: params[:exam_id], question: question, options: answers}
+  end
+
+  get '/:category_name/levels/exam/:exam_id/questions' do
+    @catLvl = category_using_name(params[:category_name])
+    questions = Question.where(exam_id:  params[:exam_id]).order("RANDOM()").pluck(:question_id)
+    session[:questions_exam] = questions #Guardo el id de las preguntas
+    if questions.empty?
+        redirect to("/#{params[:category_name]}/levels")
+    else
+        first_question = questions.first
+        
+        redirect "/#{params[:category_name]}/levels/exam/#{params[:exam_id]}/questions/#{first_question}" #el URI.encode es para tratar los espacios y caracteres correctamente
+    end
+  end
+
+  post '/:category_name/levels/exam/:exam_id/questions/:question_id/resp' do
+    @catLvl = category_using_name(params[:category_name])
+    current_question = Question.find(params[:question_id])
+    userAnswer = params[:userAnswer]# Obtener la respuesta enviada por el usuario
+    if userAnswer.downcase == current_question.answer.downcase # Verificar si la respuesta es correcta
+      session[:questions_exam].delete(current_question.id) # Siguiente pregunta
+      quest_next = session[:questions_exam].sample
+      if quest_next.nil?
+        exam_finished(@catLvl, params[:exam_id])
+        redirect "/#{params[:category_name]}/levels/exam/#{params[:exam_id]}/completed"
+      else
+        redirect "/#{params[:category_name]}/levels/exam/#{params[:exam_id]}/questions/#{quest_next}" # Se reinicia los puntos penalizados que se tuvo en la prgunta
+      end
+    else
+      redirect "/#{params[:category_name]}/levels/exam/#{params[:exam_id]}/fail" # La respuesta es incorrecta, volver a mostrar la misma pregunta
+    end
+  end
+
+  get '/:category_name/levels/exam/:exam_id/completed' do
+    exam = RecordExam.find_by(exam_id: params[:exam_id])
+    @totalPoints = exam.point
+    erb :game_completed # No hay más preguntas, mostrar mensaje de juego completado
+  end
+
   post '/inicio' do
     erb :inicio
   end
+
   post '/login' do
     user = User.find_by(username: params[:username])
     passInput = params[:password]
@@ -120,6 +200,7 @@ class App < Sinatra::Application
       erb :login
     end
   end
+
   post '/formulario' do
     email = params[:email]
     username = params[:username]
@@ -143,37 +224,33 @@ class App < Sinatra::Application
       erb :register
     end
   end
-  get '/:category_name/levels/:level_id/completed' do
-    @totalPoints = getPointLevel(params[:level_id])
-    erb :game_completed # No hay más preguntas, mostrar mensaje de juego completado
-  end
-  post '/:category_name/levels/:level_id/questions/:question_id/resp' do
-      @catLvl = category_using_name(params[:category_name])
-      current_question = Question.find(params[:question_id])
-      level = Level.find_by(id: params[:level_id])
-      userAnswer = params[:userAnswer]# Obtener la respuesta enviada por el usuario
-      if userAnswer.downcase == current_question.answer.downcase # Verificar si la respuesta es correcta
-        current_point = current_question.pointQuestion # Cargo el registro de la pregunta completado
-        add_record_question(params[:level_id], current_question, current_point, true)
-        update_points_profile(current_point) #actualizo los puntos en el perfil
-        quest_next = next_question(level.id, current_question.id) # Siguiente pregunta
-        if quest_next.nil?
-          add_record_level(level) # Agrego el registro del level completado
-          redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/completed"
-        else
-          redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/questions/#{quest_next.id}" # Se reinicia los puntos penalizados que se tuvo en la prgunta
-        end
-      else
-        add_record_question(params[:level_id], current_question, -5, false)
-        update_points_profile(-5) #actualizo los puntos en el perfil
-        question = Question.find(params[:question_id])
-        answers = [question.answer, question.wrongAnswer1, question.wrongAnswer2, question.wrongAnswer3].shuffle
-        redirect "/#{params[:category_name]}/levels/#{params[:level_id]}/questions/#{params[:question_id]}" # La respuesta es incorrecta, volver a mostrar la misma pregunta
-      end
-  end
+
 
 
   # METODOS
+
+    def exam_finished (cat, exam)
+      record = Record.find_by(user_id: session[:user_id])
+      points_exam = complete_levels(cat)
+      record_exam = RecordExam.create(record_id: record.id, exam_id: exam.id, point: points_exam)
+      update_points_profile(poins_exam)
+    end
+
+    def complete_levels (cat)
+      levels = Level.where(category_id: cat.id)
+      points = 0
+      levels.each do |lvl|
+        unless RecordLevel.exists?(level_id: lvl.id)
+          questions = Question.where(level_id: lvl.id)
+          questions.each do |q|
+            add_record_question(lvl.id, q, q.pointQuestion, true)
+            points += q.pointQuestion
+          end
+          add_record_level(lvl)
+        end
+      end
+      return points
+    end
 
     def getPointLevel (level_id)
       record = Record.find_by(user_id: session[:user_id])
@@ -251,4 +328,3 @@ class App < Sinatra::Application
       record_level.save
     end
 end
-

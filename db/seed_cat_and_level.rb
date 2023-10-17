@@ -1,5 +1,7 @@
 Level.destroy_all
 Category.destroy_all
+#Para no tener errores por el Foreign Key
+RecordLevel.destroy_all
 
 Category.create(name: "Artes", description: "Cultura y Arte Argentino")
 
