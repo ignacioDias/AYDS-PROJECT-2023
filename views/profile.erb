@@ -10,28 +10,30 @@
     </style>
 </head>
 <body>
-    <h1>Perfil</h1>
-    <div class="profile-photo">
-        <% if @profile.photo.present? %>
-           <img src =<%= @profile.photo %> />
-        <% else %>
-            <img src =<%= 'https://yt3.ggpht.com/a/AGF-l7-dEnz0wLybN5e2_UkPSQ-B_dcPRYzbhZF_DA=s900-mo-c-c0xffffffff-rj-k-no' %> />
-        <% end %>
+    <div class="cuadro" id="cuadro">
+        <div class="profile-photo">
+            <% if @profile.photo.present? %>
+            <img src =<%= @profile.photo %> />
+            <% else %>
+                <img src =<%= 'https://yt3.ggpht.com/a/AGF-l7-dEnz0wLybN5e2_UkPSQ-B_dcPRYzbhZF_DA=s900-mo-c-c0xffffffff-rj-k-no' %> />
+            <% end %>
+        </div>
+        <h2><%= @user.username %></h2>
+        <br>
+        <p id="description" contenteditable><%= @profile.description %></p>
+        <br>
+        <p><%= @user.email %>.</p>
+
+        <button id="show-form">Cambiar foto</button>
     </div>
-    <h2><%= @user.username %></h2>
-    <br>
-    <p id="description" contenteditable><%= @profile.description %></p>
-    <br>
-    <p><%= @user.email %>.</p>
-
-    <button id="show-form">Cambiar foto</button>
-
     <form id="photo-form" action="<%= url('/profile') %>" method="post">
         <label for="photo_link">Upload a photo via link:</label>
         <input type="text" id="photo_link" name="photo_link">
         <button type="submit" id="photo-submit">Upload</button>
     </form>
-
+    <a href="<%= url('/lobby') %>" class="lobby-button">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Back_Arrow.svg/120px-Back_Arrow.svg.png" alt="Lobby">
+    </a>
     <script>
         document.getElementById('show-form').addEventListener('click', function() {
             document.getElementById('photo-form').style.display = 'block';

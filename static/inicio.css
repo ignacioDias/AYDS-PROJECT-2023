@@ -63,11 +63,6 @@ form {
     padding-top: 50px;
 }
 
-
-With this change, the content within the cuadro div will be vertically centered. The align-items: center; property centers the items horizontally, and the justify-content: center; property centers the items vertically.
-
-Now, the content within the cuadro div should be both horizontally and vertically centered.
-
 /* Estilos para los botones del formulario */
 button[type="submit"] {
     background-color: #5DC1B9;
