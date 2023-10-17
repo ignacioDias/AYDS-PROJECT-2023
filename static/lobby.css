@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
+  }
 header {
     background-color: #2b2b2b;
     color: #0099ff;
@@ -14,30 +14,45 @@ header h1 {
     text-align: center;
 }
 
-/* Estilos para el barmenu */
+/* Define styles for the navigation bar */
 .navbar {
-  background-color: #007BFF; /* Color de fondo del menú */
-  padding: 10px 20px; /* Espaciado interno */
+  background-color: #0099ff; /* Background color of the navbar - #0099ff */
+  padding: 5px; /* Add some padding for spacing */
+  display: flex;
+  flex-wrap: wrap;
 }
 
-#user-info {
+/* Style the list items to display inline */
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar li {
+  display: inline-block; /* Display list items horizontally */
+  margin-right: 20px; /* Add space between items */
+}
+
+/* Style the links and buttons */
+.nav-link a, .nav-link button {
+  text-decoration: none; /* Remove underlines from links */
+  background-color: #0099ff; /* Background color of buttons and links - #0099ff */
+  color: #fff; /* Text color */
+  padding: 5px 20px; /* Add padding to buttons and links */
+  border: none; /* Remove borders */
+  border-radius: 5px; /* Add rounded corners */
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
+  display: inline-block;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.user-name {
-  font-size: 24px;
-  color: #0099ff;
-  font-weight: bold;
+.nav-link a:hover, .nav-link button:hover {
+  background-color: #0077cc; /* Change color on hover (a slightly darker shade of blue) */
 }
-
-.user-points {
-  font-size: 24px;
-  color: #0099ff;
-  font-weight: bold;
-}
-
 
 .container {
     width: 400px;
@@ -49,25 +64,6 @@ body {
     background-color: #222;
     color: #fff;
     font-family: Arial, sans-serif;
-}
-
-.ranking a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.ranking {
-  background-color: #2b2b2b;
-  padding: 10px 20px;
-  border-radius: 5px;
-  display: inline-block;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.ranking:hover {
-  background-color: #0056b3;
-  color: #fff;
-  text-decoration: none;
 }
 
 .categorias {

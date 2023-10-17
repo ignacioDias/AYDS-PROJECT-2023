@@ -8,17 +8,21 @@
   <body>
     <header>
         <h1 id="title">Categorias</h1>
-        <% if @user %>
-          <div id="user-info">
-            <span class="user-name">User: <%= @user.username %></span>
-            <span class="user-points">Points: <%= @profile.totalPoints %></span>
-          </div>
-        <% end %>
     </header>
     <div class="navbar">
-      <div class="ranking">
-      <a href="<%= url('ranking')%>">Ranking</a>
-      </div>
+      <ul>
+        <li class="nav-link">
+          <a href="<%= url('ranking') %>">Ranking</a>
+        </li>
+        <li class="nav-link">
+          <a href="<%= url('profile') %>">Perfil</a>
+        </li>
+        <li class="nav-link">
+          <form action="<%= url('logout') %>" method="post">
+            <button type="submit">Log Off</button>
+          </form>
+        </li>
+      </ul>
     </div>
     <div class="categorias">
     <% @category.each_with_index do |c, count| %>
@@ -35,4 +39,9 @@
     <% end %>
   </div>
   </body>
+  <script>
+    document.querySelector('form').addEventListener('submit', function() {
+      window.location.replace('<%= url('inicio') %>');
+    });
+  </script>
 </html>
