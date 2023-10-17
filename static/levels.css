@@ -34,7 +34,7 @@ body {
   transition: all 0.3s ease-in-out;
 }
 
-.nivel {
+.nivel, .examen {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,7 +47,8 @@ body {
   cursor: pointer;
 }
 
-.nivel:hover {
+.nivel:hover,
+.examen:hover {
   transform: scale(1.1); /* Aumentar el tamaño en un 10% */
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Cambiar el color de la sombra */
   transform: scale(1.05);
@@ -56,7 +57,8 @@ body {
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
-.nivel h3 {
+
+.nivel, .examen, h3 {
   font-size: 24px;
   margin-bottom: 15px;
   text-align: center;
@@ -68,7 +70,7 @@ body {
 }
 
 
-.nivel a {
+.nivel, .examen, a {
   text-decoration: none; /* Quitar subrayado */
   color: inherit; /* Heredar el color del texto del elemento padre */
 }

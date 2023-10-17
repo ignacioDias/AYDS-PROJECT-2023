@@ -12,14 +12,19 @@
           <!--  gsub(/\s+/, "") es para eliminar espacios-->
           <% unless(@levels_ids.include?(l.id)) %>
             <a href="<%= url(@catLvl.name.downcase + '/levels/' + l.id.to_s + '/questions') %>">
-            <% end %>
+          <% end %>
           <h3><%= l.name %></h3>
           <% if(@levels_ids.include?(l.id)) %>
             <h4>Nivel Completado</h4>
           <% end %>
-          </a> <!-- Mover el enlace <a> aquí -->
+          </a> 
       </div>
     <% end %>
+       <div class="examen">
+          <a href="<%= url(@catLvl.name.downcase + '/levels/exam/' + @exam.id.to_s + '/questions') %>">
+            <h3>Examen de <%= @catLvl.name %></h3>
+          </a>
+      </div>
   </div>
   </body>
 </html>

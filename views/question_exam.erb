@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <link href="<%= url('/question.css') %>?v=1" rel="stylesheet" type="text/css"/>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+       $(document).ready(function() {
+        $('.option').click(function() {
+          var radioButton = $(this).find('input[type="radio"]');
+          radioButton.prop('checked', true);
+          $('.option').removeClass('selected');
+          $(this).addClass('selected');
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <!-- question.erb -->
+    <div class="tittle-question">
+      <h2><%= question.question %></h2>
+    </div>
+    <form action="<%= url(@catLvl.name.downcase.to_s + '/levels/exam/' + exam.id.to_s + '/questions/' + "#{question.id}/resp") %>" method="post">
+      <div class="options">
+        <% options.each do |option| %>
+          <div class="option">
+            <input type="radio" name="userAnswer" id="<%= option.downcase %>" value="<%= option %>">
+            <label for="<%= option.downcase %>"><%= option %></label>
+          </div>
+        <% end %>
+      </div>
+      <div class="container-submit">
+        <input type="submit" value="Responder" class="submit">
+      </div>
+    </form>
+  </body>
+</html>

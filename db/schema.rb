@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_19_165816) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_10_150924) do
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -22,8 +22,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_165816) do
     t.integer "pointExam"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "level_id"
-    t.index ["level_id"], name: "index_exams_on_level_id", unique: true
+    t.integer "category_id"
+    t.index ["category_id"], name: "index_exams_on_category_id", unique: true
   end
 
   create_table "exams_profiles", id: false, force: :cascade do |t|
@@ -129,7 +129,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_19_165816) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "exams", "levels"
   add_foreign_key "levels", "categories"
   add_foreign_key "profiles", "users"
   add_foreign_key "questions", "exams"

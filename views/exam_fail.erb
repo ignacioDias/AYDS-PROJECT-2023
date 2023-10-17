@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	    <title>Document</title>
+	    <link href="<%= url('/completedGame.css') %>?v=1" rel="stylesheet" type="text/css"/>
+	</head>
+	<body>
+	  <h1>¡Examen Rechazado!</h1>
+	  <h3>Has fallado en la pregunta, si lo deseas vuelve a intentar el Examen</h3>
+    <div class="links">
+      <a href="/<%= @catLvl %>/levels"><button type="submit">Volver a Niveles</button></a>
+      <a href="/lobby"><button type ="submit">Volver a Categorías</button></a>
+    </div>
+	</body>
+</html>
