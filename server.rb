@@ -26,7 +26,6 @@ class App < Sinatra::Application
 
 
   configure :development do
-    set :database, 'sqlite3:db/duo_development.sqlite3'
     register Sinatra::Reloader
     after_reload do
       logger.info 'Reloaded'
