@@ -16,3 +16,4 @@ gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'simplecov', require: false
 gem 'database_cleaner'
+gem 'rubocop', require: false
