@@ -27,4 +27,17 @@ class Question < ActiveRecord::Base
       errors.add(:answer, 'must be different answers') if array_answers.include?(ans)
     end
   end
+
+  def self.next_question(user_id, level_id, _current_question_id)
+    questions = Question.where(level_id: level_id).to_a.shuffle
+    user = User.find(user_id)
+    record = user.record
+    record_questions_user = RecordQuestion.where(record_id: record.id, wrong: true)
+    question_ids = record_questions_user.joins(:question).where(questions: { level_id: level_id }).pluck(:question_id)
+
+    questions.each do |q|
+      return q unless question_ids.include?(q.id)
+    end
+    nil
+  end
 end
