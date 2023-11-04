@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeExamReplaceLevelIdToCategoryId < ActiveRecord::Migration[7.0]
   def change
     remove_index :exams, column: :level_id if index_exists?(:exams, :level_id)

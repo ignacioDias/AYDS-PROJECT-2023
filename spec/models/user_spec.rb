@@ -1,4 +1,6 @@
-require_relative '../../models/init.rb'
+# frozen_string_literal: true
+
+require_relative '../../models/init'
 require 'sinatra/activerecord'
 
 RSpec.describe User do
@@ -15,19 +17,19 @@ RSpec.describe User do
       existing_user = User.create(username: 'existing_user', email: 'test@example.com', password: 'password')
       user.email = existing_user.email
       expect(user.valid?).to be_falsey
-      expect(user.errors[:email]).to include("has already been taken")
+      expect(user.errors[:email]).to include('has already been taken')
     end
 
     it 'requires a valid email format' do
       user.email = 'invalid_email'
       expect(user.valid?).to be_falsey
-      expect(user.errors[:email]).to include("is not a valid email address")
+      expect(user.errors[:email]).to include('is not a valid email address')
     end
 
     it 'requires a password with minimum length' do
       user.password = '1234'
       expect(user.valid?).to be_falsey
-      expect(user.errors[:password]).to include("is too short (minimum is 5 characters)")
+      expect(user.errors[:password]).to include('is too short (minimum is 5 characters)')
     end
 
     it 'is valid with a username, email, and password' do

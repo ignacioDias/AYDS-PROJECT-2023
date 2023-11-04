@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Exam < ActiveRecord::Base
   belongs_to :category
   has_many :questions
@@ -5,4 +7,3 @@ class Exam < ActiveRecord::Base
   has_many :record_exams
   has_many :records, through: :record_exams
 end
-

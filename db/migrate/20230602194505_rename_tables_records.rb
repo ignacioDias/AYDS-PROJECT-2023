@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RenameTablesRecords < ActiveRecord::Migration[7.0]
   def change
     rename_table :records_questions, :questions_records

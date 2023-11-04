@@ -1,4 +1,6 @@
-require_relative '../../models/init.rb'
+# frozen_string_literal: true
+
+require_relative '../../models/init'
 require 'sinatra/activerecord'
 
 RSpec.describe Question do
@@ -14,14 +16,14 @@ RSpec.describe Question do
     it 'requires positive points' do
       question.pointQuestion = -10
       expect(question.valid?).to be_falsey
-      expect(question.errors[:pointQuestion]).to include("must be a positive number")
+      expect(question.errors[:pointQuestion]).to include('must be a positive number')
     end
 
     it 'requires differents answers' do
       question.answer = 'Buenos Aires'
       question.wrongAnswer1 = 'buenos aires'
       expect(question.valid?).to be_falsey
-      expect(question.errors[:answer]).to include("must be different answers")
+      expect(question.errors[:answer]).to include('must be different answers')
     end
   end
 end

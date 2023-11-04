@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UpdateReferenceRecordLevel < ActiveRecord::Migration[7.0]
   def change
     remove_reference :record_levels, :record, null: false, foreign_key: true

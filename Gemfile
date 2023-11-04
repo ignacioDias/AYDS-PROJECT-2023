@@ -1,19 +1,21 @@
+# frozen_string_literal: true
+
 # Gemfile
 ruby '2.7.5'
 
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 group :test do
-    gem 'rspec'
-  end
+  gem 'rspec'
+end
 
-gem 'uri'
-gem 'multi_json'
-gem 'sinatra-activerecord'
-gem 'sqlite3'
-gem 'rake'
-gem 'sinatra'
-gem 'sinatra-contrib'
-gem 'simplecov', require: false
 gem 'database_cleaner'
+gem 'multi_json'
+gem 'rake'
 gem 'rubocop', require: false
+gem 'simplecov', require: false
+gem 'sinatra'
+gem 'sinatra-activerecord'
+gem 'sinatra-contrib'
+gem 'sqlite3'
+gem 'uri'

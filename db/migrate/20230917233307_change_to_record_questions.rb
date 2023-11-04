@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeToRecordQuestions < ActiveRecord::Migration[7.0]
   def change
     remove_reference :record_questions, :questions, index: true

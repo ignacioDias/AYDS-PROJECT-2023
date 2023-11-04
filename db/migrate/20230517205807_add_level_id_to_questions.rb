@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddLevelIdToQuestions < ActiveRecord::Migration[7.0]
   def change
     ## elimino la columna level_id que existia antes por otra migracion eliminada

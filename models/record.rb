@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Record < ActiveRecord::Base
   belongs_to :user
   has_many :record_questions
@@ -7,4 +9,3 @@ class Record < ActiveRecord::Base
   has_many :record_levels
   has_many :levels, through: :record_levels
 end
-
