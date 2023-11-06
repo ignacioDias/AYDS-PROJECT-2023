@@ -7,13 +7,13 @@ source 'https://rubygems.org'
 
 group :test do
   gem 'rspec'
+  gem 'simplecov'
 end
 
 gem 'database_cleaner'
 gem 'multi_json'
 gem 'rake'
 gem 'rubocop', require: false
-gem 'simplecov', require: false
 gem 'sinatra'
 gem 'sinatra-activerecord'
 gem 'sinatra-contrib'
