@@ -18,9 +18,9 @@ class MainController < Sinatra::Application
   get '/:category_name/levels' do
     if session[:user_id]
       @cat_lvl = Category.category_using_name(params[:category_name]) # Categoria actual
-      @levels_cat = Level.where(category_id: @catLvl.id)
+      @levels_cat = Level.where(category_id: @cat_lvl.id)
       @levels_ids = RecordLevel.levels_ids_completed(session[:user_id])
-      @exam = Exam.find_by(category_id: @catLvl.id)
+      @exam = Exam.find_by(category_id: @cat_lvl.id)
       erb :levels
     else
       redirect '/lobby'

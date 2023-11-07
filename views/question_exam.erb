@@ -18,11 +18,11 @@
     <div class="tittle-question">
       <h2><%= question.question %></h2>
     </div>
-    <form action="<%= url(@catLvl.name.downcase.to_s + '/levels/exam/' + exam.id.to_s + '/questions/' + "#{question.id}/resp") %>" method="post">
+    <form action="<%= url(@cat_lvl.name.downcase.to_s + '/levels/exam/' + exam.id.to_s + '/questions/' + "#{question.id}/resp") %>" method="post">
       <div class="options">
         <% options.each do |option| %>
           <div class="option">
-            <input type="radio" name="userAnswer" id="<%= option.downcase %>" value="<%= option %>">
+            <input type="radio" name="user_answer" id="<%= option.downcase %>" value="<%= option %>">
             <label for="<%= option.downcase %>"><%= option %></label>
           </div>
         <% end %>
