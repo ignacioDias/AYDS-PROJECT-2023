@@ -5,7 +5,7 @@ class QuestionController < Sinatra::Application
 
   ## Questions of Levels
   get '/:category_name/levels/:level_id/questions/:question_id' do
-    @catLvl = Category.category_using_name(params[:category_name])
+    @cat_lvl = Category.category_using_name(params[:category_name])
     level = Level.find_by(id: params[:level_id])
     question = Question.find_by(id: params[:question_id].to_i)
     answers = [question.answer, question.wrongAnswer1, question.wrongAnswer2, question.wrongAnswer3].shuffle
@@ -13,8 +13,8 @@ class QuestionController < Sinatra::Application
   end
 
   get '/:category_name/levels/:level_id/questions' do
-    @catLvl = Category.category_using_name(params[:category_name])
-    @lvl = @catLvl.levels.find_by(id: params[:level_id])
+    @cat_lvl = Category.category_using_name(params[:category_name])
+    @lvl = @cat_lvl.levels.find_by(id: params[:level_id])
     questions = Question.where(level_id: @lvl.id).order('RANDOM()')
     if questions.empty?
       redirect to("/#{params[:category_name]}/levels")
@@ -26,19 +26,19 @@ class QuestionController < Sinatra::Application
   end
 
   post '/:category_name/levels/:level_id/questions/:question_id/resp' do
-    # @catLvl = Category.category_using_name(params[:category_name])
+    # @cat_lvl = Category.category_using_name(params[:category_name])
     current_question = Question.find(params[:question_id])
     level = Level.find_by(id: params[:level_id])
-    userAnswer = params[:userAnswer] # Obtener la respuesta enviada por el usuario
-    if userAnswer.downcase == current_question.answer.downcase # Verificar si la respuesta es correcta
-      answerCorrect(params[:category_name], current_question, level)
+    user_answer = params[:user_answer] # Obtener la respuesta enviada por el usuario
+    if user_answer.downcase == current_question.answer.downcase # Verificar si la respuesta es correcta
+      answer_correct(params[:category_name], current_question, level)
     else
-      answerIncorrect(params[:category_name], current_question, level)
+      answer_incorrect(params[:category_name], current_question, level)
     end
   end
 
   # METODOS
-  def answerCorrect(cat_name, current_question, level)
+  def answer_correct(cat_name, current_question, level)
     current_point = current_question.pointQuestion # Cargo el registro de la pregunta completado
     RecordQuestion.add_record_question(session[:user_id], params[:level_id], current_question, current_point, true)
     Profile.update_points_profile(current_point, session[:user_id]) # actualizo los puntos en el perfil
@@ -51,7 +51,7 @@ class QuestionController < Sinatra::Application
     end
   end
 
-  def answerIncorrect(cat_name, current_question, level)
+  def answer_incorrect(cat_name, current_question, level)
     RecordQuestion.add_record_question(session[:user_id], level.id, current_question, -5, false)
     Profile.update_points_profile(-5, session[:user_id]) # actualizo los puntos en el perfil
     question = Question.find(current_question.id)
