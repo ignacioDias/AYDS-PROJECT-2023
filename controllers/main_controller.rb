@@ -17,8 +17,8 @@ class MainController < Sinatra::Application
 
   get '/:category_name/levels' do
     if session[:user_id]
-      @catLvl = Category.category_using_name(params[:category_name]) # Categoria actual
-      @levelsCat = Level.where(category_id: @catLvl.id)
+      @cat_lvl = Category.category_using_name(params[:category_name]) # Categoria actual
+      @levels_cat = Level.where(category_id: @catLvl.id)
       @levels_ids = RecordLevel.levels_ids_completed(session[:user_id])
       @exam = Exam.find_by(category_id: @catLvl.id)
       erb :levels
@@ -42,8 +42,8 @@ class MainController < Sinatra::Application
   end
 
   get '/:category_name/levels/:level_id/completed' do
-    @catLvl = Category.category_using_name(params[:category_name])
-    @totalPoints = getPointLevel(params[:level_id])
+    @cat_lvl = Category.category_using_name(params[:category_name])
+    @total_points = getPointLevel(params[:level_id])
     erb :game_completed # No hay más preguntas, mostrar mensaje de juego completado
   end
 

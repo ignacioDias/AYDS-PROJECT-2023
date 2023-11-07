@@ -7,11 +7,11 @@
         <h1 id="title">Levels</h1>
     </header>
     <div class="niveles">
-    <% @levelsCat.each do |l| %>
+    <% @levels_cat.each do |l| %>
       <div class="nivel">
           <!--  gsub(/\s+/, "") es para eliminar espacios-->
           <% unless(@levels_ids.include?(l.id)) %>
-            <a href="<%= url(@catLvl.name.downcase + '/levels/' + l.id.to_s + '/questions') %>">
+            <a href="<%= url(@cat_lvl.name.downcase + '/levels/' + l.id.to_s + '/questions') %>">
           <% end %>
           <h3><%= l.name %></h3>
           <% if(@levels_ids.include?(l.id)) %>
@@ -21,8 +21,8 @@
       </div>
     <% end %>
        <div class="examen">
-          <a href="<%= url(@catLvl.name.downcase + '/levels/exam/' + @exam.id.to_s + '/questions') %>">
-            <h3>Examen de <%= @catLvl.name %></h3>
+          <a href="<%= url(@cat_lvl.name.downcase + '/levels/exam/' + @exam.id.to_s + '/questions') %>">
+            <h3>Examen de <%= @cat_lvl.name %></h3>
           </a>
       </div>
   </div>

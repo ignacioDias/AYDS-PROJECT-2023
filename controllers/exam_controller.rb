@@ -4,7 +4,7 @@ class ExamController < Sinatra::Application
   set :views, File.expand_path('../views', __dir__)
 
   get '/:category_name/levels/exam/:exam_id/questions/:question_id' do
-    @catLvl = Category.category_using_name(params[:category_name])
+    @cat_lvl = Category.category_using_name(params[:category_name])
     question = Question.find_by(id: params[:question_id].to_i)
     exam = Exam.find(params[:exam_id])
     answers = [question.answer, question.wrongAnswer1, question.wrongAnswer2, question.wrongAnswer3].shuffle
@@ -12,7 +12,7 @@ class ExamController < Sinatra::Application
   end
 
   get '/:category_name/levels/exam/:exam_id/questions' do
-    @catLvl = Category.category_using_name(params[:category_name])
+    @cat_lvl = Category.category_using_name(params[:category_name])
     questions = Question.where(exam_id:  params[:exam_id]).order('RANDOM()').pluck(:id)
     session[:questions_exam] = questions # Guardo el id de las preguntas
     if questions.empty?
@@ -24,23 +24,23 @@ class ExamController < Sinatra::Application
   end
 
   get '/:category_name/levels/exam/:exam_id/completed' do
-    @catLvl = Category.category_using_name(params[:category_name])
+    @cat_lvl = Category.category_using_name(params[:category_name])
     exam = RecordExam.find_by(exam_id: params[:exam_id])
-    @totalPoints = exam.point
+    @total_points = exam.point
     erb :exam_completed # No hay más preguntas, mostrar mensaje de juego completado
   end
 
   get '/:category_name/levels/exam/:exam_id/fail' do
-    @catLvl = Category.category_using_name(params[:category_name])
+    @cat_lvl = Category.category_using_name(params[:category_name])
     erb :exam_fail
   end
 
   post '/:category_name/levels/exam/:exam_id/questions/:question_id/resp' do
-    @catLvl = Category.category_using_name(params[:category_name])
+    @cat_lvl = Category.category_using_name(params[:category_name])
     current_question = Question.find(params[:question_id])
-    userAnswer = params[:userAnswer] # Obtener la respuesta enviada por el usuario
-    if userAnswer.downcase == current_question.answer.downcase # Verificar si la respuesta es correcta
-      answerCorrect(@catLvl, current_question, params[:exam_id])
+    user_answer = params[:user_answer] # Obtener la respuesta enviada por el usuario
+    if user_answer.downcase == current_question.answer.downcase # Verificar si la respuesta es correcta
+      answerCorrect(@cat_lvl, current_question, params[:exam_id])
     else
       redirect "/#{params[:category_name]}/levels/exam/#{params[:exam_id]}/fail" # La respuesta es incorrecta, Repetir el examen
     end
