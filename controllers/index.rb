@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'main_controller'
 require_relative 'users_controller'
 require_relative 'exam_controller'

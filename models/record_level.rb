@@ -7,7 +7,7 @@ class RecordLevel < ActiveRecord::Base
   def self.levels_ids_completed(user_id)
     user = User.find(user_id)
     record = user.record
-    return RecordLevel.where(record_id: record.id).pluck(:level_id)
+    RecordLevel.where(record_id: record.id).pluck(:level_id)
   end
 
   def self.complete_levels(cat, user_id)
@@ -21,7 +21,7 @@ class RecordLevel < ActiveRecord::Base
       end
       RecordLevel.add_record_level(lvl, user_id)
     end
-    return points
+    points
   end
 
   def self.add_record_level(level, user_id)

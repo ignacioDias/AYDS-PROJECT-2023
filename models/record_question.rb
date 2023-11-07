@@ -11,11 +11,13 @@ class RecordQuestion < ActiveRecord::Base
     question_ids = record_questions_user.where(wrong: true).joins(:question).where(questions: { level_id: level_id }).pluck(:question_id)
     if is_correctly
       unless question_ids.include?(current_question.id) # Verifico que no se registren 2 veces una respuesta correcta (SE PODRIA SOLUCIONAR CON VALIDACIONES)
-        record_question = RecordQuestion.new(record_id: record.id, question_id: current_question.id, points: current_point_question)
+        record_question = RecordQuestion.new(record_id: record.id, question_id: current_question.id,
+                                             points: current_point_question)
         record_question.save
       end
     else
-      record_question = RecordQuestion.new(record_id: record.id, question_id: current_question.id, points: current_point_question, wrong: false)
+      record_question = RecordQuestion.new(record_id: record.id, question_id: current_question.id,
+                                           points: current_point_question, wrong: false)
       record_question.save
     end
   end

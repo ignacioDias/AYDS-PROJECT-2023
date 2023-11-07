@@ -18,7 +18,7 @@ class App < Sinatra::Application
   # set :root,  File.dirname(__FILE__)
   set :root, File.dirname(__FILE__)
   # set :views, File.expand_path('../views', settings.root)
-  set :views, File.expand_path('../views', __FILE__)
+  set :views, File.expand_path('views', __dir__)
   # set :views, proc { File.join(root, '/views') }
   set :public_folder, File.join(root, 'static')
 

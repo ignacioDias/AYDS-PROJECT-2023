@@ -6,5 +6,5 @@ class Category < ActiveRecord::Base
 
   def self.category_using_name(cat_name)
     Category.find_by(name: cat_name.capitalize)
-  end 
+  end
 end
