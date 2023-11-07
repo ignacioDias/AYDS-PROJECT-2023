@@ -24,8 +24,9 @@ class ExamController < Sinatra::Application
   end
 
   get '/:category_name/levels/exam/:exam_id/completed' do
+    record = Record.find_by(user_id: session[:user_id])
     @cat_lvl = Category.category_using_name(params[:category_name])
-    exam = RecordExam.find_by(exam_id: params[:exam_id])
+    exam = RecordExam.find_by(record_id: record.id, exam_id: params[:exam_id])
     @total_points = exam.point
     erb :exam_completed # No hay más preguntas, mostrar mensaje de juego completado
   end

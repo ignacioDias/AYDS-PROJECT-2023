@@ -4,6 +4,7 @@ class MainController < Sinatra::Application
   set :views, File.expand_path('../views', __dir__)
 
   get '/lobby' do
+    redirect '/showLogin' if !session[:user_id]
     @category = Category.all
     @user = User.find(session[:user_id])
     @profile = Profile.find_by(user_id: @user.id)
